@@ -6,13 +6,14 @@ public class StudyQuestion
 {
     public int Id { get; set; }
 
-    //The school level the question belongs to (SchoolLevelId is stored in the database, SchoolLevel gives the object)
-    public int SchoolLevelId { get; set; }
-    public SchoolLevel SchoolLevel { get; set; } = null!;
+    //The school the question belongs to (SchoolId is stored in the database, School gives the object)
+    public int SchoolId { get; set; }
+    public School School { get; set; } = null!;
 
     [Required, StringLength(1000)]
     public string Text { get; set; } = string.Empty;
 
+    //Shown to the player after the exam
     [Required, StringLength(2000)]
     public string Explanation { get; set; } = string.Empty;
 

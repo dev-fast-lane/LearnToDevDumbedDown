@@ -7,63 +7,85 @@ namespace LearnToDev.Api.Repositories;
 
 public class StudyQuestionRepository : IStudyQuestionRepository
 {
-
     private readonly ApplicationDbContext _context;
+
     public StudyQuestionRepository(ApplicationDbContext context)
     {
         _context = context;
     }
 
-    public async Task<StudyQuestion> AddAsync(StudyQuestion studyQuestion)
+    //The filters are added only when they are given, so the database does the filtering (R-05)
+    public async Task<List<StudyQuestion>> SearchAsync(string? text, int? schoolId)
     {
-        _context.StudyQuestions.Add(studyQuestion);
-        await _context.SaveChangesAsync();
-        return studyQuestion;
-    }
+        var query = WithDetails();
 
-    public async Task<bool> DeleteAsync(int id)
-    {
-        var toBeDeleted = await _context.StudyQuestions.FindAsync(id);
+        if (!string.IsNullOrWhiteSpace(text))
+            //LIKE ignores upper and lower case in SQLite (for a–z)
+            query = query.Where(q => EF.Functions.Like(q.Text, $"%{text.Trim()}%"));
 
-        if (toBeDeleted == null) return false;
+        if (schoolId != null)
+            query = query.Where(q => q.SchoolId == schoolId);
 
-        _context.StudyQuestions.Remove(toBeDeleted);
-        await _context.SaveChangesAsync();
-        return true;
-    }
-
-    public async Task<List<StudyQuestion>> GetAllAsync()
-    {
-        return await _context.StudyQuestions.ToListAsync();
+        return await query.OrderBy(q => q.School.Name).ThenBy(q => q.Id).ToListAsync();
     }
 
     public async Task<StudyQuestion?> GetByIdAsync(int id)
     {
-        return await _context.StudyQuestions.FindAsync(id);
+        return await WithDetails().FirstOrDefaultAsync(q => q.Id == id);
     }
 
-    public async Task<StudyQuestion?> GetByIdWithAnswerOptionsAsync(int id)
-    {
-        return await _context.StudyQuestions.Include(q => q.AnswerOptions).FirstOrDefaultAsync(q => q.Id == id);
-    }
-
-    //All questions in one school level with their answer options, used by the exam (#31)
-    public async Task<List<StudyQuestion>> GetBySchoolLevelWithAnswerOptionsAsync(int schoolLevelId)
+    //All questions in one school with their answer options, used by the exam
+    public async Task<List<StudyQuestion>> GetBySchoolAsync(int schoolId)
     {
         return await _context.StudyQuestions
             .Include(q => q.AnswerOptions)
-            .Where(q => q.SchoolLevelId == schoolLevelId)
+            .Where(q => q.SchoolId == schoolId)
             .ToListAsync();
     }
 
-    public async Task<bool> UpdateAsync(StudyQuestion studyQuestion)
+    public async Task<StudyQuestion> AddAsync(StudyQuestion question)
     {
-        var oldStudyQuestion = await _context.StudyQuestions.FindAsync(studyQuestion.Id);
+        _context.StudyQuestions.Add(question);
+        await _context.SaveChangesAsync();
+        return question;
+    }
 
-        if (oldStudyQuestion == null) return false;
+    //Replaces the text, the school and all the answer options
+    public async Task<bool> UpdateAsync(StudyQuestion question)
+    {
+        var existing = await _context.StudyQuestions
+            .Include(q => q.AnswerOptions)
+            .FirstOrDefaultAsync(q => q.Id == question.Id);
+        if (existing == null)
+            return false;
 
-        _context.Entry(oldStudyQuestion).CurrentValues.SetValues(studyQuestion);
+        existing.SchoolId = question.SchoolId;
+        existing.Text = question.Text;
+        existing.Explanation = question.Explanation;
+
+        _context.AnswerOptions.RemoveRange(existing.AnswerOptions);
+        existing.AnswerOptions = question.AnswerOptions;
+
         await _context.SaveChangesAsync();
         return true;
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var existing = await _context.StudyQuestions.FindAsync(id);
+        if (existing == null)
+            return false;
+
+        _context.StudyQuestions.Remove(existing);
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    //The question with its school (for the name) and answer options
+    private IQueryable<StudyQuestion> WithDetails()
+    {
+        return _context.StudyQuestions
+            .Include(q => q.School)
+            .Include(q => q.AnswerOptions);
     }
 }

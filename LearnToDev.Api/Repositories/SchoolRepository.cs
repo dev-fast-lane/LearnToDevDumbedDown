@@ -2,13 +2,11 @@ using LearnToDev.Api.Data;
 using LearnToDev.Api.Models;
 using LearnToDev.Api.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace LearnToDev.Api.Repositories;
 
 public class SchoolRepository : ISchoolRepository
 {
-
     private readonly ApplicationDbContext _context;
 
     public SchoolRepository(ApplicationDbContext context)
@@ -16,6 +14,17 @@ public class SchoolRepository : ISchoolRepository
         _context = context;
     }
 
+    public async Task<List<School>> GetAllAsync()
+    {
+        return await _context.Schools.OrderBy(s => s.Name).ToListAsync();
+    }
+
+    public async Task<School?> GetByIdAsync(int id)
+    {
+        return await _context.Schools.FindAsync(id);
+    }
+
+    //The database sets Id when we save, so the returned object has the new Id
     public async Task<School> AddAsync(School school)
     {
         _context.Schools.Add(school);
@@ -23,40 +32,27 @@ public class SchoolRepository : ISchoolRepository
         return school;
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    //Returns false if the school does not exist, so the controller can answer 404
+    public async Task<bool> UpdateAsync(School school)
     {
-        var toBeDeleted = await _context.Schools.FindAsync(id);
+        var existing = await _context.Schools.FindAsync(school.Id);
+        if (existing == null)
+            return false;
 
-        if (toBeDeleted == null) return false;
-
-        _context.Schools.Remove(toBeDeleted);
+        existing.Name = school.Name;
+        existing.Description = school.Description;
         await _context.SaveChangesAsync();
         return true;
     }
 
-    public async Task<List<School>> GetAllAsync()
+    //Deleting a school also deletes its questions, job requirements and passed exams (cascade)
+    public async Task<bool> DeleteAsync(int id)
     {
-        return await _context.Schools.ToListAsync();
-    }
+        var existing = await _context.Schools.FindAsync(id);
+        if (existing == null)
+            return false;
 
-    public async Task<School?> GetByIdAsync(int id)
-    {
-        return await _context.Schools.FindAsync(id);
-
-    }
-
-    public async Task<School?> GetByIdWithLevelAsync(int id)
-    {
-        return await _context.Schools.Include(s => s.SchoolLevels).FirstOrDefaultAsync(s => s.Id == id);
-    }
-
-    public async Task<bool> UpdateAsync(School school)
-    {
-        var oldSchool = await _context.Schools.FindAsync(school.Id);
-
-        if (oldSchool == null) return false;
-
-        _context.Entry(oldSchool).CurrentValues.SetValues(school);
+        _context.Schools.Remove(existing);
         await _context.SaveChangesAsync();
         return true;
     }

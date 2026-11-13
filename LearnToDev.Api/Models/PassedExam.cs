@@ -1,8 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace LearnToDev.Api.Models;
 
-public class PlayerSchoolProgress
+//Join table for the N:M relation between Player and School: the player has passed the exam in the school
+public class PassedExam
 {
     public int PlayerId { get; set; }
     public Player Player { get; set; } = null!;
@@ -10,6 +9,5 @@ public class PlayerSchoolProgress
     public int SchoolId { get; set; }
     public School School { get; set; } = null!;
 
-    [Range(0, 3)]
-    public int LevelPassed { get; set; }
+    public DateTime PassedAt { get; set; }
 }

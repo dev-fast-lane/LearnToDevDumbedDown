@@ -1,9 +1,0 @@
-{
-    "name": "Fullstack",
-    "isExamOnly": true,
-    "schoolLevels": [
-        { "level": 1, "compendium": null, "studyQuestions": [] },
-        { "level": 2, "compendium": null, "studyQuestions": [] },
-        { "level": 3, "compendium": null, "studyQuestions": [] }
-    ]
-}

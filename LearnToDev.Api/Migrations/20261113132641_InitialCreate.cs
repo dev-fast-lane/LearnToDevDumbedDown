@@ -51,32 +51,13 @@ namespace LearnToDev.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Housings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Order = table.Column<int>(type: "INTEGER", nullable: false),
-                    HoursPerDay = table.Column<int>(type: "INTEGER", nullable: false),
-                    Rent = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Housings", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Jobs",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Rank = table.Column<int>(type: "INTEGER", nullable: false),
-                    Wage = table.Column<int>(type: "INTEGER", nullable: false),
-                    HoursPerShift = table.Column<int>(type: "INTEGER", nullable: false),
-                    TasksPerDay = table.Column<int>(type: "INTEGER", nullable: false)
+                    Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -90,7 +71,7 @@ namespace LearnToDev.Api.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    IsExamOnly = table.Column<bool>(type: "INTEGER", nullable: false)
+                    Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -204,60 +185,12 @@ namespace LearnToDev.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "JobPrerequisites",
-                columns: table => new
-                {
-                    JobId = table.Column<int>(type: "INTEGER", nullable: false),
-                    RequiredJobId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_JobPrerequisites", x => new { x.JobId, x.RequiredJobId });
-                    table.ForeignKey(
-                        name: "FK_JobPrerequisites_Jobs_JobId",
-                        column: x => x.JobId,
-                        principalTable: "Jobs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_JobPrerequisites_Jobs_RequiredJobId",
-                        column: x => x.RequiredJobId,
-                        principalTable: "Jobs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "JobTasks",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    JobId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Text = table.Column<string>(type: "TEXT", maxLength: 3000, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_JobTasks", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_JobTasks_Jobs_JobId",
-                        column: x => x.JobId,
-                        principalTable: "Jobs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Players",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    Money = table.Column<int>(type: "INTEGER", nullable: false),
-                    Day = table.Column<int>(type: "INTEGER", nullable: false),
-                    HoursLeftInDay = table.Column<int>(type: "INTEGER", nullable: false),
-                    HousingId = table.Column<int>(type: "INTEGER", nullable: false),
                     CurrentJobId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
@@ -270,12 +203,6 @@ namespace LearnToDev.Api.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Players_Housings_HousingId",
-                        column: x => x.HousingId,
-                        principalTable: "Housings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Players_Jobs_CurrentJobId",
                         column: x => x.CurrentJobId,
                         principalTable: "Jobs",
@@ -284,111 +211,15 @@ namespace LearnToDev.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SchoolLevels",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    SchoolId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Level = table.Column<int>(type: "INTEGER", nullable: false),
-                    Compendium = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SchoolLevels", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SchoolLevels_Schools_SchoolId",
-                        column: x => x.SchoolId,
-                        principalTable: "Schools",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "JobTaskAnswers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    JobTaskId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Text = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_JobTaskAnswers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_JobTaskAnswers_JobTasks_JobTaskId",
-                        column: x => x.JobTaskId,
-                        principalTable: "JobTasks",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "JobDays",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    PlayerId = table.Column<int>(type: "INTEGER", nullable: false),
-                    JobId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Day = table.Column<int>(type: "INTEGER", nullable: false),
-                    TasksTotal = table.Column<int>(type: "INTEGER", nullable: false),
-                    TasksCorrect = table.Column<int>(type: "INTEGER", nullable: false),
-                    Completed = table.Column<bool>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_JobDays", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_JobDays_Jobs_JobId",
-                        column: x => x.JobId,
-                        principalTable: "Jobs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_JobDays_Players_PlayerId",
-                        column: x => x.PlayerId,
-                        principalTable: "Players",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PlayerSchoolProgresses",
-                columns: table => new
-                {
-                    PlayerId = table.Column<int>(type: "INTEGER", nullable: false),
-                    SchoolId = table.Column<int>(type: "INTEGER", nullable: false),
-                    LevelPassed = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PlayerSchoolProgresses", x => new { x.PlayerId, x.SchoolId });
-                    table.ForeignKey(
-                        name: "FK_PlayerSchoolProgresses_Players_PlayerId",
-                        column: x => x.PlayerId,
-                        principalTable: "Players",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PlayerSchoolProgresses_Schools_SchoolId",
-                        column: x => x.SchoolId,
-                        principalTable: "Schools",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "JobRequirements",
                 columns: table => new
                 {
                     JobId = table.Column<int>(type: "INTEGER", nullable: false),
-                    SchoolLevelId = table.Column<int>(type: "INTEGER", nullable: false)
+                    SchoolId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobRequirements", x => new { x.JobId, x.SchoolLevelId });
+                    table.PrimaryKey("PK_JobRequirements", x => new { x.JobId, x.SchoolId });
                     table.ForeignKey(
                         name: "FK_JobRequirements_Jobs_JobId",
                         column: x => x.JobId,
@@ -396,9 +227,9 @@ namespace LearnToDev.Api.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_JobRequirements_SchoolLevels_SchoolLevelId",
-                        column: x => x.SchoolLevelId,
-                        principalTable: "SchoolLevels",
+                        name: "FK_JobRequirements_Schools_SchoolId",
+                        column: x => x.SchoolId,
+                        principalTable: "Schools",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -409,7 +240,7 @@ namespace LearnToDev.Api.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    SchoolLevelId = table.Column<int>(type: "INTEGER", nullable: false),
+                    SchoolId = table.Column<int>(type: "INTEGER", nullable: false),
                     Text = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: false),
                     Explanation = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: false)
                 },
@@ -417,9 +248,34 @@ namespace LearnToDev.Api.Migrations
                 {
                     table.PrimaryKey("PK_StudyQuestions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_StudyQuestions_SchoolLevels_SchoolLevelId",
-                        column: x => x.SchoolLevelId,
-                        principalTable: "SchoolLevels",
+                        name: "FK_StudyQuestions_Schools_SchoolId",
+                        column: x => x.SchoolId,
+                        principalTable: "Schools",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PassedExams",
+                columns: table => new
+                {
+                    PlayerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    SchoolId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PassedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PassedExams", x => new { x.PlayerId, x.SchoolId });
+                    table.ForeignKey(
+                        name: "FK_PassedExams_Players_PlayerId",
+                        column: x => x.PlayerId,
+                        principalTable: "Players",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PassedExams_Schools_SchoolId",
+                        column: x => x.SchoolId,
+                        principalTable: "Schools",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -488,34 +344,14 @@ namespace LearnToDev.Api.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobDays_JobId",
-                table: "JobDays",
-                column: "JobId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_JobDays_PlayerId",
-                table: "JobDays",
-                column: "PlayerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_JobPrerequisites_RequiredJobId",
-                table: "JobPrerequisites",
-                column: "RequiredJobId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_JobRequirements_SchoolLevelId",
+                name: "IX_JobRequirements_SchoolId",
                 table: "JobRequirements",
-                column: "SchoolLevelId");
+                column: "SchoolId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobTaskAnswers_JobTaskId",
-                table: "JobTaskAnswers",
-                column: "JobTaskId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_JobTasks_JobId",
-                table: "JobTasks",
-                column: "JobId");
+                name: "IX_PassedExams_SchoolId",
+                table: "PassedExams",
+                column: "SchoolId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Players_CurrentJobId",
@@ -523,29 +359,15 @@ namespace LearnToDev.Api.Migrations
                 column: "CurrentJobId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Players_HousingId",
-                table: "Players",
-                column: "HousingId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Players_UserId",
                 table: "Players",
-                column: "UserId");
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayerSchoolProgresses_SchoolId",
-                table: "PlayerSchoolProgresses",
-                column: "SchoolId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SchoolLevels_SchoolId",
-                table: "SchoolLevels",
-                column: "SchoolId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StudyQuestions_SchoolLevelId",
+                name: "IX_StudyQuestions_SchoolId",
                 table: "StudyQuestions",
-                column: "SchoolLevelId");
+                column: "SchoolId");
         }
 
         /// <inheritdoc />
@@ -570,19 +392,10 @@ namespace LearnToDev.Api.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "JobDays");
-
-            migrationBuilder.DropTable(
-                name: "JobPrerequisites");
-
-            migrationBuilder.DropTable(
                 name: "JobRequirements");
 
             migrationBuilder.DropTable(
-                name: "JobTaskAnswers");
-
-            migrationBuilder.DropTable(
-                name: "PlayerSchoolProgresses");
+                name: "PassedExams");
 
             migrationBuilder.DropTable(
                 name: "StudyQuestions");
@@ -591,25 +404,16 @@ namespace LearnToDev.Api.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "JobTasks");
-
-            migrationBuilder.DropTable(
                 name: "Players");
 
             migrationBuilder.DropTable(
-                name: "SchoolLevels");
+                name: "Schools");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Housings");
-
-            migrationBuilder.DropTable(
                 name: "Jobs");
-
-            migrationBuilder.DropTable(
-                name: "Schools");
         }
     }
 }
