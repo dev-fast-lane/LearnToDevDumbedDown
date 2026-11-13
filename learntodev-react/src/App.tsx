@@ -2,12 +2,14 @@ import Layout from "./components/Layout";
 import { Routes, Route } from "react-router";
 import StartPage from "./pages/StartPage";
 import LoginPage from "./pages/LoginPage";
-import SchoolsPage from "./pages/SchoolsPage";
-import JobsPage from "./pages/JobsPage";
-import HousingPage from "./pages/HousingPage";
-import AdminPage from "./pages/AdminPage";
-import NotFoundPage from "./pages/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage";
+import SchoolsPage from "./pages/SchoolsPage";
+import ExamPage from "./pages/ExamPage";
+import JobsPage from "./pages/JobsPage";
+import AdminSchoolsPage from "./pages/admin/AdminSchoolsPage";
+import AdminQuestionsPage from "./pages/admin/AdminQuestionsPage";
+import AdminJobsPage from "./pages/admin/AdminJobsPage";
+import NotFoundPage from "./pages/NotFoundPage";
 import RequireAuth from "./auth/RequireAuth";
 import RequireAdmin from "./auth/RequireAdmin";
 
@@ -24,12 +26,14 @@ export default function App() {
         <Route element={<RequireAuth />}>
           <Route path="/" element={<StartPage />} />
           <Route path="/schools" element={<SchoolsPage />} />
+          <Route path="/schools/:schoolId/exam" element={<ExamPage />} />
           <Route path="/jobs" element={<JobsPage />} />
-          <Route path="/housing" element={<HousingPage />} />
 
           {/* Admins only */}
           <Route element={<RequireAdmin />}>
-            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin/schools" element={<AdminSchoolsPage />} />
+            <Route path="/admin/questions" element={<AdminQuestionsPage />} />
+            <Route path="/admin/jobs" element={<AdminJobsPage />} />
           </Route>
         </Route>
 
