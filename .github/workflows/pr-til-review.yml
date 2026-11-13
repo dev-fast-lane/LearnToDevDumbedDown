@@ -27,13 +27,13 @@ jobs:
           # Gruppemedlemmene som skal varsles (forfatteren av PR-en hoppes over)
           GRUPPE: JorgenEideAnskau Eonblued sebtho2104 luringmax
           OWNER: dev-fast-lane
-          REPO_NAME: LearnToDev
-          PROJECT: "2"
+          REPO_NAME: LearnToDevDumbedDown
+          PROJECT: "4"
         run: |
           set -euo pipefail
 
           issues=$(GH_TOKEN="$PR_TOKEN" gh api graphql -F n="$PR" -f query='
-            query($n:Int!){repository(owner:"dev-fast-lane",name:"LearnToDev"){pullRequest(number:$n){
+            query($n:Int!){repository(owner:"dev-fast-lane",name:"LearnToDevDumbedDown"){pullRequest(number:$n){
               closingIssuesReferences(first:20){nodes{number}}}}}' \
             --jq '.data.repository.pullRequest.closingIssuesReferences.nodes[].number')
 
@@ -51,10 +51,10 @@ jobs:
           flyttet=""
           for n in $issues; do
             item=$(gh api graphql -F n="$n" -f query='
-              query($n:Int!){repository(owner:"dev-fast-lane",name:"LearnToDev"){issue(number:$n){
+              query($n:Int!){repository(owner:"dev-fast-lane",name:"LearnToDevDumbedDown"){issue(number:$n){
                 projectItems(first:5){nodes{id project{number}
                   fieldValueByName(name:"Status"){... on ProjectV2ItemFieldSingleSelectValue{name}}}}}}}' \
-              --jq '.data.repository.issue.projectItems.nodes[] | select(.project.number==2) | "\(.id) \(.fieldValueByName.name)"')
+              --jq '.data.repository.issue.projectItems.nodes[] | select(.project.number==4) | "\(.id) \(.fieldValueByName.name)"')
 
             item_id=${item%% *}
             status=${item#* }
