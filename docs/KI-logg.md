@@ -93,6 +93,12 @@ Verktøy brukt: Claude
 Hva ble spurt: Hjelp til innlogging, registrering og beskyttede ruter i React (#65), steg for steg: hva context er, hvorfor AuthContext deles i tre filer, interface i TypeScript, JSX, klient- mot servervalidering, og hvordan rutevakter med Outlet og Navigate fungerer.
 Hva ble brukt: Claude og jeg jobbet sammen om å komme frem til løsningene. Jeg skrev authContext, useAuth og registreringssiden selv etter forklaring og hint, og Claude rettet feilene underveis. AuthProvider, håndteringen av feil fra Identity i registreringen, RequireAuth, RequireAdmin, rutene i App.tsx og den nye menyen i Layout foreslo Claude, og jeg la dem inn.
 Verifisering: tsc, eslint og npm run build ga 0 feil. Testet registreringsskjemaet i nettleseren mot API-et.
+
+Dato: 13-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Forenkle hele prosjektet til en enklere quiz-app som fortsatt dekker kravene R-01–R-12, i et nytt repo (LearnToDevDumbedDown) med kopi av Kanban-brettet (#58).
+Hva ble brukt: Jeg valgte omfanget (bare skoler, spørsmål, eksamen og jobber, uten økonomi og bolig). Claude skrev den nye datamodellen, migreringen, repositoriene, ExamService og JobService, controllerne, DTO-ene, testene, React-sidene og oppdateringene i docs, og laget sakene på det nye brettet med omskrevet tekst.
+Verifisering: dotnet build -warnaserror ga 0 advarsler, og dotnet test ga 28 av 28 bestått. npm run lint og npm run build ga 0 feil. Kjørte API-et og React-appen og testet i nettleseren: innlogging som spiller og admin, eksamen (bestått), låst og åpen jobb, søk og filter på spørsmål, validering på klient og server (blant annet to riktige svar gir 400), CRUD for jobb med skolekrav, og 403 når en spiller kaller admin-API-et. Sjekket også mobilbredde (375 px) uten vannrett scroll.
 ```
 ### Ingvald
 ```

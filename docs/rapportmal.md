@@ -5,25 +5,25 @@ Lenke til OneDrive Word dokument: [**Word**](https://hioa365-my.sharepoint.com/:
 
 
 ## Databasestruktur og tilgang - ansvarlig: navn (~400 ord)
-Tilhørende issue: [#71](https://github.com/dev-fast-lane/LearnToDev/issues/71)
+Tilhørende issue: [#46](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/46)
 
 ## Arkitektur og beslutningslogg - ansvarlig: navn (~400 ord)
-Tilhørende issue: [#72](https://github.com/dev-fast-lane/LearnToDev/issues/72)
+Tilhørende issue: [#47](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/47)
 
 ## Kravanalyse og sporbarhetsmatrise - ansvarlig: navn (~400 ord)
-Tilhørende issue: [#73](https://github.com/dev-fast-lane/LearnToDev/issues/73)
+Tilhørende issue: [#48](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/48)
 
 ## Sikkerhet, robusthet og testing - ansvarlig: navn (~400 ord)
-Tilhørende issue: [#74](https://github.com/dev-fast-lane/LearnToDev/issues/74)
+Tilhørende issue: [#49](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/49)
 
 ## KI-bruk og verifisering - ansvarlig: navn (~300 ord)
-Tilhørende issue: [#75](https://github.com/dev-fast-lane/LearnToDev/issues/75)
+Tilhørende issue: [#50](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/50)
 
 ## Brukeropplevelse, konklusjon og refleksjon - ansvarlig: navn (~500 ord)
-Tilhørende issue: [#76](https://github.com/dev-fast-lane/LearnToDev/issues/76)
+Tilhørende issue: [#51](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/51)
 
 ## Kjøreinstruksjoner, testbrukere og test på ren maskin - ansvarlig: navn (~300 ord)
-Tilhørende issue: [#77](https://github.com/dev-fast-lane/LearnToDev/issues/77)
+Tilhørende issue: [#52](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/52)
 
 
 
@@ -63,7 +63,7 @@ Tilhørende issue: [#77](https://github.com/dev-fast-lane/LearnToDev/issues/77)
 ## 1. Tittel og administrative opplysninger
 
 **Ansvarlig:** navn · **Omfang:** ca. 150–250 ord  
-**Tilhørende issues:** [#77](https://github.com/dev-fast-lane/LearnToDev/issues/77), [#78](https://github.com/dev-fast-lane/LearnToDev/issues/78)
+**Tilhørende issues:** [#52](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/52), [#53](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/53)
 
 Oppgi prosjektnavn, valgt oppgave, anonymiserte kandidat-ID-er, teknologistakk og versjoner. Beskriv hvordan applikasjonen startes, hvilke testbrukere som finnes, og hvordan leveringspakken klargjøres. Ikke ta med ekte passord eller andre hemmeligheter i rapporten.
 
@@ -72,7 +72,7 @@ Oppgi prosjektnavn, valgt oppgave, anonymiserte kandidat-ID-er, teknologistakk o
 ## 2. Kravsanalyse og sporbarhetsmatrise
 
 **Ansvarlig:** navn · **Omfang:** ca. 300–500 ord  
-**Tilhørende issue:** [#73](https://github.com/dev-fast-lane/LearnToDev/issues/73)
+**Tilhørende issue:** [#48](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/48)
 
 ### 2.1 Verdiforslag og målgruppe
 
@@ -87,7 +87,7 @@ Lag en matrise over funksjonelle og ikke-funksjonelle krav. For hvert krav oppgi
 ## 3. Systemarkitektur og beslutningslogger for tekniske valg
 
 **Ansvarlig:** navn · **Omfang:** ca. 400–700 ord  
-**Tilhørende issues:** [#11](https://github.com/dev-fast-lane/LearnToDev/issues/11), [#32](https://github.com/dev-fast-lane/LearnToDev/issues/32), [#55](https://github.com/dev-fast-lane/LearnToDev/issues/55), [#56](https://github.com/dev-fast-lane/LearnToDev/issues/56), [#63](https://github.com/dev-fast-lane/LearnToDev/issues/63), [#64](https://github.com/dev-fast-lane/LearnToDev/issues/64)
+**Tilhørende issues:** [#11](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/11), [#37](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/37), [#41](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/41), [#42](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/42)
 
 ### 3.1 Systemarkitekturdiagrammer
 
@@ -101,14 +101,14 @@ Hvis prosjektet faktisk inneholder både MVC- og API/SPA-underapplikasjoner, sam
 
 Dokumenter minst to viktige tekniske beslutninger. For hver beslutning beskriver dere kontekst, alternativer, valgt løsning, begrunnelse og ulemper eller kompromisser.
 
-**Tilhørende issues:** [#3](https://github.com/dev-fast-lane/LearnToDev/issues/3), [#5](https://github.com/dev-fast-lane/LearnToDev/issues/5), [#42](https://github.com/dev-fast-lane/LearnToDev/issues/42)
+**Tilhørende issues:** [#3](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/3), [#5](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/5), [#32](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/32)
 
 ---
 
 ## 4. Databasestruktur og datatilgang
 
 **Ansvarlig:** navn · **Omfang:** ca. 300–500 ord  
-**Tilhørende issues:** [#9](https://github.com/dev-fast-lane/LearnToDev/issues/9), [#10](https://github.com/dev-fast-lane/LearnToDev/issues/10), [#12](https://github.com/dev-fast-lane/LearnToDev/issues/12), [#19](https://github.com/dev-fast-lane/LearnToDev/issues/19), [#20](https://github.com/dev-fast-lane/LearnToDev/issues/20)
+**Tilhørende issues:** [#9](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/9), [#10](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/10), [#12](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/12), [#19](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/19), [#20](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/20)
 
 ### 4.1 Entitet-relasjonsdiagram (ER-diagram)
 
@@ -123,19 +123,19 @@ Beskriv hvordan `DbContext` er konfigurert, hvordan data hentes og lagres, og hv
 ## 5. Funksjonsoversikt og sporbarhet
 
 **Ansvarlig:** navn · **Omfang:** ca. 450–750 ord  
-**Tilhørende issues:** [#15](https://github.com/dev-fast-lane/LearnToDev/issues/15), [#27](https://github.com/dev-fast-lane/LearnToDev/issues/27), [#29](https://github.com/dev-fast-lane/LearnToDev/issues/29), [#30](https://github.com/dev-fast-lane/LearnToDev/issues/30), [#31](https://github.com/dev-fast-lane/LearnToDev/issues/31), [#32](https://github.com/dev-fast-lane/LearnToDev/issues/32), [#33](https://github.com/dev-fast-lane/LearnToDev/issues/33), [#34](https://github.com/dev-fast-lane/LearnToDev/issues/34), [#36](https://github.com/dev-fast-lane/LearnToDev/issues/36), [#37](https://github.com/dev-fast-lane/LearnToDev/issues/37), [#38](https://github.com/dev-fast-lane/LearnToDev/issues/38), [#39](https://github.com/dev-fast-lane/LearnToDev/issues/39), [#40](https://github.com/dev-fast-lane/LearnToDev/issues/40), [#43](https://github.com/dev-fast-lane/LearnToDev/issues/43), [#44](https://github.com/dev-fast-lane/LearnToDev/issues/44)
+**Tilhørende issues:** [#15](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/15), [#25](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/25), [#27](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/27), [#28](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/28), [#30](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/30), [#31](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/31)
 
 Beskriv de viktigste funksjonene og hvordan de støtter kravene. Velg én sentral domenemodell for den grundige CRUD-gjennomgangen.
 
 ### 5.1 Grundig gjennomgang av CRUD-operasjoner
 
-**Valgt domenemodell:** [for eksempel `StudyQuestion`, `Job` eller `Housing`]
+**Valgt domenemodell:** [for eksempel `StudyQuestion`, `Job` eller `School`]
 
 #### 5.1.1 Underapplikasjon 1: MVC
 
 Beskriv oppretting, lesing, oppdatering og sletting. Følg dataflyten gjennom skjema, controller, validering, datatilgang og resultatet som vises til brukeren.
 
-**Mulige tilhørende issues:** [#22](https://github.com/dev-fast-lane/LearnToDev/issues/22), [#23](https://github.com/dev-fast-lane/LearnToDev/issues/23), [#24](https://github.com/dev-fast-lane/LearnToDev/issues/24), [#25](https://github.com/dev-fast-lane/LearnToDev/issues/25), [#26](https://github.com/dev-fast-lane/LearnToDev/issues/26)
+**Mulige tilhørende issues:** [#22](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/22), [#23](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/23), [#24](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/24)
 
 #### 5.1.2 Underapplikasjon 2: API og SPA
 
@@ -143,16 +143,16 @@ Hvis denne underapplikasjonen finnes i prosjektet, beskriv hvordan frontend send
 
 ### 5.2 Arbeidsflytdiagram: Hvordan ulike brukerroller bruker applikasjonen
 
-Ta med minst ett arbeidsflytdiagram for en sentral handling, for eksempel å øve, ta eksamen, arbeide en dag eller bytte bolig. Vis relevante roller og beslutningspunkter.
+Ta med minst ett arbeidsflytdiagram for en sentral handling, for eksempel å ta eksamen eller ta en jobb. Vis relevante roller og beslutningspunkter.
 
-**Mulige tilhørende issues:** [#29](https://github.com/dev-fast-lane/LearnToDev/issues/29), [#31](https://github.com/dev-fast-lane/LearnToDev/issues/31), [#33](https://github.com/dev-fast-lane/LearnToDev/issues/33), [#39](https://github.com/dev-fast-lane/LearnToDev/issues/39), [#43](https://github.com/dev-fast-lane/LearnToDev/issues/43)
+**Mulige tilhørende issues:** [#27](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/27), [#28](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/28)
 
 ---
 
 ## 6. Sikkerhet, robusthet og testing
 
 **Ansvarlig:** navn · **Omfang:** ca. 400–650 ord  
-**Tilhørende issues:** [#14](https://github.com/dev-fast-lane/LearnToDev/issues/14), [#16](https://github.com/dev-fast-lane/LearnToDev/issues/16), [#17](https://github.com/dev-fast-lane/LearnToDev/issues/17), [#47](https://github.com/dev-fast-lane/LearnToDev/issues/47), [#48](https://github.com/dev-fast-lane/LearnToDev/issues/48), [#49](https://github.com/dev-fast-lane/LearnToDev/issues/49), [#50](https://github.com/dev-fast-lane/LearnToDev/issues/50), [#51](https://github.com/dev-fast-lane/LearnToDev/issues/51), [#52](https://github.com/dev-fast-lane/LearnToDev/issues/52)
+**Tilhørende issues:** [#14](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/14), [#16](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/16), [#17](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/17), [#34](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/34), [#35](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/35)
 
 ### 6.1 Flyt for autentisering og autorisasjon
 
@@ -166,14 +166,14 @@ Forklar hvilken validering som skjer på klienten og serveren, hvordan ugyldige 
 
 Beskriv testverktøyene, hva slags logikk som testes, og hvordan positive og negative scenarioer dekkes. Ta med en tabell med test-ID, testet enhet/metode, testtype, scenario og forventet resultat. Oppgi faktisk antall tester; ikke hev at et minstekrav er oppfylt uten å kontrollere det.
 
-**Tilhørende issues:** [#47](https://github.com/dev-fast-lane/LearnToDev/issues/47), [#48](https://github.com/dev-fast-lane/LearnToDev/issues/48), [#49](https://github.com/dev-fast-lane/LearnToDev/issues/49), [#50](https://github.com/dev-fast-lane/LearnToDev/issues/50), [#51](https://github.com/dev-fast-lane/LearnToDev/issues/51)
+**Tilhørende issues:** [#34](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/34), [#35](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/35)
 
 ---
 
 ## 7. KI-bruk og verifisering
 
 **Ansvarlig:** Jørgen Eide Anskau · **Omfang:** ca. 250–450 ord
-**Tilhørende issue:** [#75](https://github.com/dev-fast-lane/LearnToDev/issues/75)
+**Tilhørende issue:** [#50](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/50)
 
 ### 7.1 Metodikk for bruk av KI
 
@@ -194,15 +194,15 @@ På frontend fikk vi hjelp til `apiClient`, `ApiError`, valideringsmeldinger og 
 ## 8. Brukeropplevelse, brukervennlighet og tilgjengelighet
 
 **Ansvarlig:** navn · **Omfang:** ca. 250–450 ord  
-**Tilhørende issues:** [#15](https://github.com/dev-fast-lane/LearnToDev/issues/15), [#27](https://github.com/dev-fast-lane/LearnToDev/issues/27), [#29](https://github.com/dev-fast-lane/LearnToDev/issues/29), [#30](https://github.com/dev-fast-lane/LearnToDev/issues/30), [#31](https://github.com/dev-fast-lane/LearnToDev/issues/31), [#37](https://github.com/dev-fast-lane/LearnToDev/issues/37), [#45](https://github.com/dev-fast-lane/LearnToDev/issues/45), [#80](https://github.com/dev-fast-lane/LearnToDev/issues/80), [#81](https://github.com/dev-fast-lane/LearnToDev/issues/81), [#82](https://github.com/dev-fast-lane/LearnToDev/issues/82)
+**Tilhørende issues:** [#15](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/15), [#25](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/25), [#27](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/27), [#31](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/31)
 
-Beskriv utformingen av grensesnittet, hvordan det fungerer på ulike skjermstørrelser, og hvilke hensyn dere tok til brukervennlighet og tilgjengelighet. Ta med konkret evaluering eller tilbakemelding hvis dere gjennomførte det. Hvis dere ikke testet med brukere, forklar hvordan dere ville gjort det. Ta bare med #80–#82 dersom funksjonene er implementert og relevante for rapporten.
+Beskriv utformingen av grensesnittet, hvordan det fungerer på ulike skjermstørrelser, og hvilke hensyn dere tok til brukervennlighet og tilgjengelighet. Ta med konkret evaluering eller tilbakemelding hvis dere gjennomførte det. Hvis dere ikke testet med brukere, forklar hvordan dere ville gjort det.
 
 ---
 
 ## 9. Konklusjon og egenrefleksjon
 
 **Ansvarlig:** navn · **Omfang:** ca. 200–350 ord  
-**Tilhørende issue:** [#76](https://github.com/dev-fast-lane/LearnToDev/issues/76)
+**Tilhørende issue:** [#51](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/51)
 
 Oppsummer hva prosjektet har oppnådd, hvilke tekniske utfordringer som var størst, og hva gruppa lærte. Vurder gjenstående teknisk gjeld og hva dere ville prioritert videre dersom prosjektet skulle utvikles mer.

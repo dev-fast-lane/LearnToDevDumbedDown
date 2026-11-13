@@ -1,64 +1,47 @@
-# Features L T D
+# Funksjonsoversikt
 
-Tall og regler er bestemt i [beslutningsloggen](beslutningslogg.md) og [spilltall](spilltall.md). Hvis noe her er uklart, er det de som gjelder.
+LearnToDev er et lite læringsspill. Spilleren tar eksamener på skoler, og beståtte eksamener låser opp jobber. Tall og regler er bestemt i [beslutningsloggen](beslutningslogg.md) og [spilltall](spilltall.md). Hvis noe her er uklart, er det de som gjelder.
 
-## Main features
+Prosjektet ble forenklet 13.11.2026 (ADR 7 i beslutningsloggen). Penger, bolig, timer, nivåer, Fullstack, kompendium, øving, arbeidsdager, achievements, klokke og leaderboard er kuttet.
 
-### Spiller
+## Roller
 
-- male / female
-- bolignivå / tid per dag / leie
-- jobb / lønn
-- studienivå / jobber tilgjengelige
-- penger /damn son
+| Rolle | Kan |
+| --- | --- |
+| Gjest | Logge inn og registrere seg |
+| Spiller | Se skolene, ta eksamen, se jobbene, ta en åpen jobb og si opp |
+| Admin | Alt spilleren kan, og i tillegg CRUD for skoler, spørsmål og jobber, og søk i spørsmål |
 
-### Quiz
+## Spiller
 
-- ett dataset per skole, unntatt Fullstack, som ikke har egne spørsmål og trekker eksamensspørsmål fra de andre skolene
-- .json = questions
-- multiple choice på learning
-- insert field på jobber
+- En spiller (`Player`) opprettes automatisk første gang brukeren åpner spillet. Én bruker har én spiller.
+- Startsiden viser nåværende jobb og beståtte eksamener.
 
-### Jobber
+## Skoler og eksamen
 
-når man jobber er det insert field
+- Det finnes tre skoler: Frontend, Backend og Database. Admin kan legge til flere.
+- Hver skole har flervalgsspørsmål med 2–4 svaralternativer, der nøyaktig ett er riktig.
+- En eksamen trekker 5 tilfeldige spørsmål fra skolen. 4 eller 5 riktige gir bestått.
+- Serveren retter eksamen, og riktig svar sendes ikke til nettleseren før eksamen er levert.
+- Etter levering ser spilleren resultatet, riktig svar og en forklaring for hvert spørsmål.
+- Man kan ta eksamen så mange ganger man vil. En bestått eksamen lagres én gang (`PassedExam`).
 
-Rekkefølge på jobber er IT Help -> Stud.ass (Frontend, Backend, Database) -> Office -> Startup -> Tech Corp
+## Jobber
 
-- IT Help = alltid åpen
-- Stud.ass Frontend / Backend / Database = bestått nivå 1 i sin skole & jobbet som IT Help
-- Office = bestått Fullstack 1 & jobbet i alle tre Stud.ass-jobbene
-- Startup = bestått Fullstack 2 & jobbet på Office
-- Tech Corp = bestått Fullstack 3 & jobbet på Startup
+| Jobb | Krever bestått |
+| --- | --- |
+| IT Help | Ingenting |
+| Frontend-utvikler | Frontend |
+| Backend-utvikler | Backend |
+| Databaseutvikler | Database |
+| Fullstack-utvikler | Frontend, Backend og Database |
 
-### Skoler
+- En jobb er åpen når spilleren har bestått alle skolene den krever. Ellers er den låst, med en årsak som «Mangler eksamen i Backend og Frontend».
+- Spilleren kan ha én jobb om gangen, og kan si den opp.
+- Admin bestemmer hvilke skoler en jobb krever (N:M mellom `Job` og `School`).
 
-- Kompendie tilgjengelig på hver enkelt skole, unntatt Fullstack
-- egenstudie = multiple choice quiz med forklaring etter svar
-- eksamen 5 spørsmål uten forklaring, 4 riktige = bestått
-- Fullstack = bare eksamen. Krever bestått samme nivå på alle de andre skolene, og spørsmålene trekkes fra dem
+## Admin
 
-### Boliger
-
-- 5 ulike bolignivåer fra lav til høy - telt, dorm, hybel, leilighet, penthouse
-- For hver oppgradering i bolig øker tiden per dag med 2 timer, fra 12-20 timer.
-- Boligene har ulik husleie per natt, der telt er helt gratis. Husleien betales på starten av hver nye dag, etter at lønnen er utbetalt. Har man ikke råd, blir man kastet ut til telt.
-
-### Achievements
-
-- slacker = ikke åpne kompendiet før fullført eksamen
-- fullført alle spørsmål på en skole
-- klart eksamen på første forsøk
-
-### Time Management
-
-tid er direkte knyttet til hus  
-rekkefølge på bolig: tent -> dorm -> hybel -> Apt. -> Penthouse  
-man legger på 2 t per upgrade
-endre klokke til at rødt er tid du IKKE har, at viseren beveger seg mot det røde.
-
-- Tent = 12 timer til rådighet per dag, dorm = 14 t osv.
-
-### Money
-
-#### microtransaksjoner
+- CRUD for skoler (`/admin/schools`), spørsmål (`/admin/questions`) og jobber (`/admin/jobs`).
+- Søk i spørsmål på tekst og filter på skole.
+- Validering på både klient og server, med samme regler.

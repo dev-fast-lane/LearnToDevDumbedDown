@@ -1,79 +1,29 @@
-# Game numbers
+# Spilltall
 
-## Exam / work logic
+Tallene ligger i `GameRules` i `LearnToDev.Api/Models/GameRules.cs`. Hvorfor de er valgt, står i [beslutningsloggen](beslutningslogg.md).
 
-### Exam pass mark
+## Eksamen
 
-- 5 questions per exam (all exams)
-- 4-5 out of 5 questions correct: PASS!
-- 1-3 out of 5 questions correct: FAIL!
+| Regel | Verdi | Konstant |
+| --- | --- | --- |
+| Spørsmål per eksamen | 5 | `GameRules.ExamQuestionCount` |
+| Riktige for bestått | 4 | `GameRules.ExamPassMark` |
 
-### Tasks per work shift
+- 4–5 av 5 riktige: bestått
+- 0–3 av 5 riktige: ikke bestått
+- En skole må ha minst 5 spørsmål før eksamen kan tas.
+- Nye forsøk er gratis og ubegrensede.
 
-- 5 tasks per shift (all jobs)
-- The result screen shows how many tasks were correct.
-- No warnings and no firing: a bad shift has no consequences (cut 12.11.2026, see ADR 3 in the decision log).
+## Jobber
 
-## Time
+| Jobb | Krever bestått |
+| --- | --- |
+| IT Help | Ingenting |
+| Frontend-utvikler | Frontend |
+| Backend-utvikler | Backend |
+| Databaseutvikler | Database |
+| Fullstack-utvikler | Frontend, Backend og Database |
 
-### Standard time per day
+## Kuttet
 
-12 hours
-
-### Extra time per housing tier
-
-2 extra hours per upgrade
-
-- Tent: 12 h
-- Dorm: 14 h
-- Rooming house: 16 h
-- Apartment: 18 h
-- Penthouse: 20 h
-
-### Exam time
-
-- Level 1 exam: 2 h
-- Level 2 exam: 3 h
-- Level 3 exam: 4 h
-
-### Practice questions time
-
-1 hour per question
-
-### Work time
-
-- IT help: 4 h
-- Stud.ass: 4 h
-- Office: 6 h
-- Startup: 6 h
-- Tech Corp: 8 h
-
-## Money
-
-Info: Each job pays for its own housing tier with a little left over (IT help -> Tent, Stud.ass -> Dorm, Office -> Rooming house, Startup -> Apartment, Tech Corp -> Penhouse), but not the next one.
-
-### Starting money
-
-50
-
-### Salary per job tier
-
-- IT help: 20
-- Stud.ass: 75
-- Office: 150
-- Startup: 260
-- Tech Corp: 450
-
-### Rent per house tier
-
-- Tent: 0
-- Dorm: 40
-- Rooming house: 80
-- Apartment: 160
-- Penthouse: 300
-
-### Exam price
-
-- Level 1: 50
-- Level 2: 100
-- Level 3: 200
+Penger, lønn, husleie, boliger, timer per dag, nivå 1–3, eksamenspris og eksamenstid ble kuttet 13.11.2026 (ADR 7).

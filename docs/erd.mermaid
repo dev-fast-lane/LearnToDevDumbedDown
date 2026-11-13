@@ -4,22 +4,14 @@ config:
 ---
 
 erDiagram
-    IdentityUser ||--o{ Player : "har spill"
-    Housing ||--o{ Player : "bor i"
+    IdentityUser ||--o| Player : "har spiller"
     Job |o--o{ Player : "nåværende jobb"
-    Player ||--o{ PlayerSchoolProgress : "har fremgang"
-    School ||--o{ PlayerSchoolProgress : "fremgang i"
-    Player ||--o{ JobDay : "jobber"
-    Job ||--o{ JobDay : "jobbes i"
-    Job ||--o{ JobPrerequisite : "krever jobb"
-    Job ||--o{ JobPrerequisite : "kreves av"
-    Job ||--o{ JobRequirement : "krever nivå"
-    SchoolLevel ||--o{ JobRequirement : "kreves av"
-    School ||--|{ SchoolLevel : "har 3"
-    SchoolLevel ||--o{ StudyQuestion : "har"
+    Player ||--o{ PassedExam : "har bestått"
+    School ||--o{ PassedExam : "bestått av"
+    Job ||--o{ JobRequirement : "krever"
+    School ||--o{ JobRequirement : "kreves av"
+    School ||--o{ StudyQuestion : "har"
     StudyQuestion ||--|{ AnswerOption : "har"
-    Job ||--o{ JobTask : "har"
-    JobTask ||--|{ JobTaskAnswer : "godkjente svar"
 
     IdentityUser {
         string Id PK
@@ -29,45 +21,19 @@ erDiagram
 
     Player {
         int Id PK
-        string UserId FK "eier, ikke unik"
-        string Name "spillnavn"
-        int Money
-        int Day
-        int HoursLeftInDay
-        int HousingId FK
+        string UserId FK "unik, én spiller per bruker"
         int CurrentJobId FK "null = arbeidsledig"
-    }
-
-    Housing {
-        int Id PK
-        string Name
-        int Order "1 = Telt"
-        int HoursPerDay "totalt per dag"
-        int Rent "per natt, Telt = 0"
     }
 
     School {
         int Id PK
         string Name
-        bool IsExamOnly "true for Fullstack"
-    }
-
-    SchoolLevel {
-        int Id PK
-        int SchoolId FK
-        int Level "1 til 3"
-        string Compendium "null for Fullstack"
-    }
-
-    PlayerSchoolProgress {
-        int PlayerId PK, FK
-        int SchoolId PK, FK
-        int LevelPassed "0 til 3"
+        string Description
     }
 
     StudyQuestion {
         int Id PK
-        int SchoolLevelId FK
+        int SchoolId FK
         string Text
         string Explanation
     }
@@ -76,46 +42,22 @@ erDiagram
         int Id PK
         int StudyQuestionId FK
         string Text
-        bool IsCorrect
+        bool IsCorrect "nøyaktig ett per spørsmål"
     }
 
     Job {
         int Id PK
         string Name
-        int Rank
-        int Wage "per jobbdag"
-        int HoursPerShift "default 4"
-        int TasksPerDay
-    }
-
-    JobPrerequisite {
-        int JobId PK, FK
-        int RequiredJobId PK, FK "må ha jobbet her"
+        string Description
     }
 
     JobRequirement {
-        int JobId PK, FK
-        int SchoolLevelId PK, FK "må ha bestått"
+        int JobId PK, FK "N:M Job - School"
+        int SchoolId PK, FK
     }
 
-    JobTask {
-        int Id PK
-        int JobId FK
-        string Text
-    }
-
-    JobTaskAnswer {
-        int Id PK
-        int JobTaskId FK
-        string Text
-    }
-
-    JobDay {
-        int Id PK
-        int PlayerId FK
-        int JobId FK
-        int Day
-        int TasksTotal
-        int TasksCorrect
-        bool Completed
+    PassedExam {
+        int PlayerId PK, FK "N:M Player - School"
+        int SchoolId PK, FK
+        datetime PassedAt
     }
