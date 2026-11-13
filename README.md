@@ -1,8 +1,8 @@
-# LearnToDev
+# LearnToDev (forenklet)
 
-Et læringsspill der spilleren øver på fag, tar eksamener, får jobb og styrer økonomi og bolig. Prosjektet er en gruppeoppgave i ITPE3200 ved OsloMet.
+Et læringsspill der spilleren tar eksamener på skoler og låser opp jobber. Prosjektet er en gruppeoppgave i ITPE3200 ved OsloMet.
 
-Spilleren øver på spørsmål i ulike skoler og nivåer, består eksamener for å låse opp jobber, tjener penger på arbeidsdager og betaler husleie for å bo. Se [docs/features_overview.md](docs/features_overview.md) for en full beskrivelse av funksjonene.
+Dette er den forenklede versjonen av [LearnToDev](https://github.com/dev-fast-lane/LearnToDev). Spilleren tar eksamen (5 flervalgsspørsmål, 4 riktige for å bestå) på skolene Frontend, Backend og Database, og beståtte eksamener låser opp jobber. Admin lager skoler, spørsmål og jobber. Se [docs/features_overview.md](docs/features_overview.md) for funksjonene og ADR 7 i [beslutningsloggen](docs/beslutningslogg.md) for hvorfor prosjektet ble forenklet.
 
 ## Innhold
 
@@ -18,8 +18,8 @@ Spilleren øver på spørsmål i ulike skoler og nivåer, består eksamener for 
 Du trenger [.NET SDK 10](https://dotnet.microsoft.com/download).
 
 ```bash
-git clone https://github.com/dev-fast-lane/LearnToDev.git
-cd LearnToDev
+git clone https://github.com/dev-fast-lane/LearnToDevDumbedDown.git
+cd LearnToDevDumbedDown
 dotnet build
 dotnet watch --project LearnToDev.Api --launch-profile https
 ```
@@ -73,7 +73,7 @@ Testnavn følger mønsteret `Metode_Situasjon_ForventetResultat`, for eksempel
 
 ## Arbeidsprosess
 
-Alt arbeid styres fra prosjektbrettet [Kanban](https://github.com/orgs/dev-fast-lane/projects/2). Hver oppgave er en sak (issue), og én sak = én branch = én PR.
+Alt arbeid styres fra prosjektbrettet [Kanban LearnToDevDumbedDown](https://github.com/orgs/dev-fast-lane/projects/4). Hver oppgave er en sak (issue), og én sak = én branch = én PR.
 
 ### Statuskolonner
 
@@ -168,12 +168,12 @@ Logg aldri passord eller persondata som e-post og navn. Bruk ID-er.
 - Én sak = én PR. Ikke bland flere oppgaver i samme PR.
 - Ingen direkte push til `main`. Alt går via PR.
 - Fører du KI-bruk, skriv det i KI-loggen fortløpende (se `docs/`).
-- Endrer du modellen, oppdater ER-diagrammet i [`docs/KI-logg.md`](docs/KI-logg.md).
+- Endrer du modellen, oppdater ER-diagrammet i [`docs/erd.mermaid`](docs/erd.mermaid).
 - Har du tvil om hva som skal gjøres, spør i saken eller på gruppen før du begynner.
 
 ## Dokumentasjon
 
 - [Funksjonsoversikt](docs/features_overview.md)
-- [ER-diagram v4](docs/erd-gruppe-v4.mermaid)
+- [ER-diagram](docs/erd.mermaid)
 - [Prosjektplan](docs/prosjektplan.md) (peker til Kanban-brettet)
 - [Beslutningslogg for spillreglene](docs/beslutningslogg.md)

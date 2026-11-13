@@ -2,7 +2,34 @@
 
 Denne loggen forklarer hvorfor spillreglene i [spilltall](spilltall.md) er som de er. Hver beslutning følger malen Kontekst, Beslutning, Konsekvenser og Dato.
 
-## ADR 1: Fullstack er bare eksamen
+**Gjeldende regler:** ADR 6, 7 og 8. ADR 1–5 er erstattet av forenklingen i ADR 7, og står igjen som historikk.
+
+## ADR 7: Forenkling til en quiz-app
+
+**Dato:** 13.11.2026
+
+**Kontekst:** LearnToDev hadde blitt for stort til å bli ferdig og godt testet før fristen 30.11. Modellen hadde 13 tabeller, og mye gjensto: nivåer, Fullstack, øving, arbeidsdager, ny dag, husleie og bolig. Kravene (R-01–R-12) krever ikke et så stort spill.
+
+**Beslutning:** Prosjektet forenkles i et nytt repo, `LearnToDevDumbedDown`. Spillet består av skoler med flervalgsspørsmål, eksamen og jobber som låses opp av beståtte eksamener.
+
+- Beholdt: `School`, `StudyQuestion`, `AnswerOption`, `Job`, `JobRequirement` (N:M jobb ↔ skole), `Player` og `PassedExam` (N:M spiller ↔ skole). CRUD for School, StudyQuestion og Job, søk i spørsmål, innlogging og roller.
+- Kuttet: penger, lønn, husleie og bolig, timer per dag, nivå 1–3, Fullstack-eksamen, kompendium, øvingsmodus, arbeidsdager med fritekstoppgaver, forutsatte jobber (jobbstigen), flere spill per bruker, achievements, klokke og leaderboard.
+
+Kravene dekkes slik: R-01 med CRUD for tre entiteter, R-02 med `JobRequirement` og `PassedExam`, R-03 med eksamen og jobbregelen på serveren (`ExamService`, `JobService`), R-04 med låste og åpne jobber, bestått/ikke bestått og menyen per rolle, og R-05 med søk på tekst og skole.
+
+**Konsekvenser:** Mindre kode å skrive, teste og dokumentere, og mer tid til rapporten. Spillet blir mindre avansert, men hver del er ferdig. Migreringene er erstattet av én ny `InitialCreate`, så en gammel `learntodev.db` må slettes. Sakene på brettet er skrevet om til den nye løsningen.
+
+## ADR 8: Eksamen og jobbkrav
+
+**Dato:** 13.11.2026
+
+**Kontekst:** Etter forenklingen trengs én tydelig regel for å bestå og én for å låse opp jobber.
+
+**Beslutning:** En eksamen trekker 5 tilfeldige spørsmål fra skolen, og 4 riktige gir bestått (`GameRules`). Serveren retter, og riktig svar sendes ikke til nettleseren før eksamen er levert. En jobb er åpen når spilleren har bestått alle skolene jobben krever. Nye forsøk er gratis.
+
+**Konsekvenser:** Reglene ligger i tjenestene og er testet. Spilleren kan ikke jukse ved å lese svarene i nettleseren. Siden trekket ikke lagres, kan en spiller i teorien sende inn andre spørsmål fra samme skole enn de som ble trukket. Det godtar vi, siden det ikke gir noen fordel så lenge alle spørsmålene må besvares riktig.
+
+## ADR 1: Fullstack er bare eksamen (erstattet av ADR 7)
 
 **Dato:** 28.10.2026
 
@@ -12,7 +39,7 @@ Denne loggen forklarer hvorfor spillreglene i [spilltall](spilltall.md) er som d
 
 **Konsekvenser:** Ingen egne spørsmål å skrive for Fullstack, og ingen kompendium (`Compendium = null`). Fullstack blir en siste "boss" på hvert nivå, og gir tilgang til bedre jobber.
 
-## ADR 2: Jobbstigen
+## ADR 2: Jobbstigen (erstattet av ADR 7)
 
 **Dato:** 28.10.2026
 
@@ -50,7 +77,7 @@ Lønnen er satt slik at overskuddet per dag (lønn minus husleie for boligen som
 
 **Konsekvenser:** Det er en risiko for at spilleren får sparken, og progresjonen stopper litt opp. Spilleren må da finne seg en ny jobb. `Player` må få nye felt for å lagre antall advarsler, dagen for siste advarsel, og hvilken jobb spilleren fikk sparken fra og når, så ERD og migrering må oppdateres.
 
-## ADR 4: Husleie og Telt
+## ADR 4: Husleie og Telt (erstattet av ADR 7)
 
 **Dato:** 28.10.2026
 
@@ -68,7 +95,7 @@ Lønnen er satt slik at overskuddet per dag (lønn minus husleie for boligen som
 
 **Konsekvenser:** Spilleren må få ny jobb for å flytte opp. Det oppstår et valg mellom penger (billig bolig) og tid (dyr bolig med flere timer). Saldoen kan aldri bli negativ.
 
-## ADR 5: Eksamen
+## ADR 5: Eksamen (erstattet av ADR 8)
 
 **Dato:** 28.10.2026
 

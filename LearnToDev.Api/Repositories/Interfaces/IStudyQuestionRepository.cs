@@ -6,9 +6,8 @@ public interface IStudyQuestionRepository
 {
     Task<List<StudyQuestion>> GetAllAsync();
     Task<StudyQuestion?> GetByIdAsync(int id);
-    Task<StudyQuestion> AddAsync(StudyQuestion studyQuestion);
-    Task<bool> UpdateAsync(StudyQuestion studyQuestion);
+    Task<List<StudyQuestion>> GetBySchoolAsync(int schoolId);
+    Task<StudyQuestion> AddAsync(StudyQuestion question);
+    Task<bool> UpdateAsync(StudyQuestion question);
     Task<bool> DeleteAsync(int id);
-    Task<StudyQuestion?> GetByIdWithAnswerOptionsAsync(int id);
-    Task<List<StudyQuestion>> GetBySchoolLevelWithAnswerOptionsAsync(int schoolLevelId);
 }

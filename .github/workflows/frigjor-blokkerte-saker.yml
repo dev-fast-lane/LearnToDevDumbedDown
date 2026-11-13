@@ -23,7 +23,7 @@ jobs:
           REPO: ${{ github.repository }}
           ISSUE: ${{ github.event.issue.number }}
           OWNER: dev-fast-lane
-          PROJECT: "2"
+          PROJECT: "4"
         run: |
           set -euo pipefail
 
@@ -63,10 +63,10 @@ jobs:
             fi
 
             item=$(gh api graphql -F n="$n" -f query='
-              query($n:Int!){repository(owner:"dev-fast-lane",name:"LearnToDev"){issue(number:$n){
+              query($n:Int!){repository(owner:"dev-fast-lane",name:"LearnToDevDumbedDown"){issue(number:$n){
                 projectItems(first:5){nodes{id project{number}
                   fieldValueByName(name:"Status"){... on ProjectV2ItemFieldSingleSelectValue{name}}}}}}}' \
-              --jq '.data.repository.issue.projectItems.nodes[] | select(.project.number==2) | "\(.id) \(.fieldValueByName.name)"')
+              --jq '.data.repository.issue.projectItems.nodes[] | select(.project.number==4) | "\(.id) \(.fieldValueByName.name)"')
 
             item_id=${item%% *}
             status=${item#* }

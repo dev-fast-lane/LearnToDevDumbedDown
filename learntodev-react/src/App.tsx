@@ -4,7 +4,6 @@ import StartPage from "./pages/StartPage";
 import LoginPage from "./pages/LoginPage";
 import SchoolsPage from "./pages/SchoolsPage";
 import JobsPage from "./pages/JobsPage";
-import HousingPage from "./pages/HousingPage";
 import AdminPage from "./pages/AdminPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -25,7 +24,6 @@ export default function App() {
           <Route path="/" element={<StartPage />} />
           <Route path="/schools" element={<SchoolsPage />} />
           <Route path="/jobs" element={<JobsPage />} />
-          <Route path="/housing" element={<HousingPage />} />
 
           {/* Admins only */}
           <Route element={<RequireAdmin />}>

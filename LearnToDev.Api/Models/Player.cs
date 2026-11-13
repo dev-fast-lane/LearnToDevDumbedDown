@@ -3,44 +3,26 @@ using Microsoft.AspNetCore.Identity;
 
 namespace LearnToDev.Api.Models;
 
+//The game state of one user. Created the first time the user opens the game
 public class Player
 {
     public int Id { get; set; }
 
-    //Link to the Identity login user. Each player has exactly one user
+    //Link to the Identity login user. One user has one player
     [Required]
     public string UserId { get; set; } = string.Empty;
     public IdentityUser User { get; set; } = null!;
-
-    //The game name the user picks on the start screen (max 30 characters)
-    [Required, StringLength(30)]
-    public string Name { get; set; } = string.Empty;
-
-    [Range(0, int.MaxValue)]
-    public int Money { get; set; }
-
-    [Range(1, int.MaxValue)]
-    public int Day { get; set; } = 1;
-    [Range(0, 24)]
-    public int HoursLeftInDay { get; set; }
-
-    //The housing the player lives in (HousingId is stored in the database, Housing gives the object)
-    public int HousingId { get; set; }
-    public Housing Housing { get; set; } = null!;
 
     //Current job. null means the player is unemployed
     public int? CurrentJobId { get; set; }
     public Job? CurrentJob { get; set; }
 
-    //The player's progress in schools and completed job days (one player has many of each)
-    public ICollection<PlayerSchoolProgress> SchoolProgresses { get; set; } = new List<PlayerSchoolProgress>();
-    public ICollection<JobDay> JobDays { get; set; } = new List<JobDay>();
+    //The schools the player has passed (one player has many)
+    public ICollection<PassedExam> PassedExams { get; set; } = new List<PassedExam>();
 
-    //Highest level passed in one school. 0 means the player has not passed any level there yet.
-    //NB: SchoolProgresses must be loaded first (GetByIdWithSchoolProgressAsync or GetByIdWithDetailsAsync).
-    //There is no lazy loading, so on a player from a plain query the list is empty and this always returns 0
-    public int GetLevelPassed(int schoolId)
+    //NB: PassedExams must be loaded first (Include). There is no lazy loading
+    public bool HasPassed(int schoolId)
     {
-        return SchoolProgresses.FirstOrDefault(p => p.SchoolId == schoolId)?.LevelPassed ?? 0;
+        return PassedExams.Any(p => p.SchoolId == schoolId);
     }
 }

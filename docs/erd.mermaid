@@ -1,0 +1,63 @@
+---
+config:
+  theme: default
+---
+
+erDiagram
+    IdentityUser ||--o| Player : "har spiller"
+    Job |o--o{ Player : "nåværende jobb"
+    Player ||--o{ PassedExam : "har bestått"
+    School ||--o{ PassedExam : "bestått av"
+    Job ||--o{ JobRequirement : "krever"
+    School ||--o{ JobRequirement : "kreves av"
+    School ||--o{ StudyQuestion : "har"
+    StudyQuestion ||--|{ AnswerOption : "har"
+
+    IdentityUser {
+        string Id PK
+        string UserName
+        string Email
+    }
+
+    Player {
+        int Id PK
+        string UserId FK "unik, én spiller per bruker"
+        int CurrentJobId FK "null = arbeidsledig"
+    }
+
+    School {
+        int Id PK
+        string Name
+        string Description
+    }
+
+    StudyQuestion {
+        int Id PK
+        int SchoolId FK
+        string Text
+        string Explanation
+    }
+
+    AnswerOption {
+        int Id PK
+        int StudyQuestionId FK
+        string Text
+        bool IsCorrect "nøyaktig ett per spørsmål"
+    }
+
+    Job {
+        int Id PK
+        string Name
+        string Description
+    }
+
+    JobRequirement {
+        int JobId PK, FK "N:M Job - School"
+        int SchoolId PK, FK
+    }
+
+    PassedExam {
+        int PlayerId PK, FK "N:M Player - School"
+        int SchoolId PK, FK
+        datetime PassedAt
+    }

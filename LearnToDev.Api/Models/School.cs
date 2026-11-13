@@ -9,10 +9,15 @@ public class School
     [Required, StringLength(100)]
     public string Name { get; set; } = string.Empty;
 
-    //True only for Fullstack: it has an exam only, and no compendium
-    public bool IsExamOnly { get; set; }
+    [StringLength(500)]
+    public string Description { get; set; } = string.Empty;
 
-    //The levels in the school and the players' progress in it (one school has many of each)
-    public ICollection<SchoolLevel> SchoolLevels { get; set; } = new List<SchoolLevel>();
-    public ICollection<PlayerSchoolProgress> PlayerSchoolProgresses { get; set; } = new List<PlayerSchoolProgress>();
+    //The questions in the school. The exam draws from these
+    public ICollection<StudyQuestion> StudyQuestions { get; set; } = new List<StudyQuestion>();
+
+    //Jobs that require this school (N:M through JobRequirement)
+    public ICollection<JobRequirement> JobRequirements { get; set; } = new List<JobRequirement>();
+
+    //Players who have passed the exam (N:M through PassedExam)
+    public ICollection<PassedExam> PassedExams { get; set; } = new List<PassedExam>();
 }

@@ -16,22 +16,18 @@ builder.Services.AddOpenApi();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
                        ?? throw new InvalidOperationException("Fant ikke connection string 'DefaultConnection'.");
 
-//Registering ApplicationDbContext so that it can be injected using SQL
+//Registering ApplicationDbContext so that it can be injected using SQLite
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 
 //Repositories: Scoped gives one per request, same lifetime as ApplicationDbContext
-builder.Services.AddScoped<IHousingRepository, HousingRepository>();
-builder.Services.AddScoped<ISchoolLevelRepository, SchoolLevelRepository>();
 builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
 builder.Services.AddScoped<IStudyQuestionRepository, StudyQuestionRepository>();
 builder.Services.AddScoped<IJobRepository, JobRepository>();
-builder.Services.AddScoped<IJobTaskRepository, JobTaskRepository>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 
-//Services: game rules. Scoped because they use the repositories above
-builder.Services.AddScoped<IExamService, ExamService>();
-builder.Services.AddScoped<IJobEligibilityService, JobEligibilityService>();
+//Services: the game rules. Scoped because they use the repositories above
+builder.Services.AddScoped<IJobService, JobService>();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     {
@@ -44,7 +40,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 // Et API skal svare med statuskode, ikke sende brukeren videre til en innloggingsside
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    //JavaScript får ikke lese cookien, så et XSS-angrep ikke kan stjele innloggingen (Identity gjør dette som standard, men vi skriver det ut for å synliggjøre valget)
+    //JavaScript får ikke lese cookien, så et XSS-angrep ikke kan stjele innloggingen
     options.Cookie.HttpOnly = true;
     //Nettleseren sender ikke cookien med forespørsler fra andre nettsider
     options.Cookie.SameSite = SameSiteMode.Strict;
@@ -89,7 +85,6 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

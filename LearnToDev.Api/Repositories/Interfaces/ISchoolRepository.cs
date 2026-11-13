@@ -9,5 +9,4 @@ public interface ISchoolRepository
     Task<School> AddAsync(School school);
     Task<bool> UpdateAsync(School school);
     Task<bool> DeleteAsync(int id);
-    Task<School?> GetByIdWithLevelAsync(int id);
 }

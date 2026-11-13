@@ -41,105 +41,25 @@ namespace LearnToDev.Api.Migrations
                     b.ToTable("AnswerOptions");
                 });
 
-            modelBuilder.Entity("LearnToDev.Api.Models.Housing", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("HoursPerDay")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Rent")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Housings");
-                });
-
             modelBuilder.Entity("LearnToDev.Api.Models.Job", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("HoursPerShift")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Rank")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TasksPerDay")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Wage")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.ToTable("Jobs");
-                });
-
-            modelBuilder.Entity("LearnToDev.Api.Models.JobDay", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("Completed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Day")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("JobId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TasksCorrect")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TasksTotal")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JobId");
-
-                    b.HasIndex("PlayerId");
-
-                    b.ToTable("JobDays");
-                });
-
-            modelBuilder.Entity("LearnToDev.Api.Models.JobPrerequisite", b =>
-                {
-                    b.Property<int>("JobId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RequiredJobId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("JobId", "RequiredJobId");
-
-                    b.HasIndex("RequiredJobId");
-
-                    b.ToTable("JobPrerequisites");
                 });
 
             modelBuilder.Entity("LearnToDev.Api.Models.JobRequirement", b =>
@@ -147,55 +67,32 @@ namespace LearnToDev.Api.Migrations
                     b.Property<int>("JobId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("SchoolLevelId")
+                    b.Property<int>("SchoolId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("JobId", "SchoolLevelId");
+                    b.HasKey("JobId", "SchoolId");
 
-                    b.HasIndex("SchoolLevelId");
+                    b.HasIndex("SchoolId");
 
                     b.ToTable("JobRequirements");
                 });
 
-            modelBuilder.Entity("LearnToDev.Api.Models.JobTask", b =>
+            modelBuilder.Entity("LearnToDev.Api.Models.PassedExam", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("PlayerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("JobId")
+                    b.Property<int>("SchoolId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasMaxLength(3000)
+                    b.Property<DateTime>("PassedAt")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("PlayerId", "SchoolId");
 
-                    b.HasIndex("JobId");
+                    b.HasIndex("SchoolId");
 
-                    b.ToTable("JobTasks");
-                });
-
-            modelBuilder.Entity("LearnToDev.Api.Models.JobTaskAnswer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("JobTaskId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JobTaskId");
-
-                    b.ToTable("JobTaskAnswers");
+                    b.ToTable("PassedExams");
                 });
 
             modelBuilder.Entity("LearnToDev.Api.Models.Player", b =>
@@ -207,23 +104,6 @@ namespace LearnToDev.Api.Migrations
                     b.Property<int?>("CurrentJobId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Day")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("HoursLeftInDay")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("HousingId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Money")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -232,29 +112,10 @@ namespace LearnToDev.Api.Migrations
 
                     b.HasIndex("CurrentJobId");
 
-                    b.HasIndex("HousingId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Players");
-                });
-
-            modelBuilder.Entity("LearnToDev.Api.Models.PlayerSchoolProgress", b =>
-                {
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SchoolId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("LevelPassed")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("PlayerId", "SchoolId");
-
-                    b.HasIndex("SchoolId");
-
-                    b.ToTable("PlayerSchoolProgresses");
                 });
 
             modelBuilder.Entity("LearnToDev.Api.Models.School", b =>
@@ -263,8 +124,10 @@ namespace LearnToDev.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsExamOnly")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -274,28 +137,6 @@ namespace LearnToDev.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Schools");
-                });
-
-            modelBuilder.Entity("LearnToDev.Api.Models.SchoolLevel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Compendium")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SchoolId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SchoolId");
-
-                    b.ToTable("SchoolLevels");
                 });
 
             modelBuilder.Entity("LearnToDev.Api.Models.StudyQuestion", b =>
@@ -309,7 +150,7 @@ namespace LearnToDev.Api.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("SchoolLevelId")
+                    b.Property<int>("SchoolId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Text")
@@ -319,7 +160,7 @@ namespace LearnToDev.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SchoolLevelId");
+                    b.HasIndex("SchoolId");
 
                     b.ToTable("StudyQuestions");
                 });
@@ -527,44 +368,6 @@ namespace LearnToDev.Api.Migrations
                     b.Navigation("StudyQuestion");
                 });
 
-            modelBuilder.Entity("LearnToDev.Api.Models.JobDay", b =>
-                {
-                    b.HasOne("LearnToDev.Api.Models.Job", "Job")
-                        .WithMany("JobDays")
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LearnToDev.Api.Models.Player", "Player")
-                        .WithMany("JobDays")
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Job");
-
-                    b.Navigation("Player");
-                });
-
-            modelBuilder.Entity("LearnToDev.Api.Models.JobPrerequisite", b =>
-                {
-                    b.HasOne("LearnToDev.Api.Models.Job", "Job")
-                        .WithMany("Prerequisites")
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("LearnToDev.Api.Models.Job", "RequiredJob")
-                        .WithMany("RequiredBy")
-                        .HasForeignKey("RequiredJobId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Job");
-
-                    b.Navigation("RequiredJob");
-                });
-
             modelBuilder.Entity("LearnToDev.Api.Models.JobRequirement", b =>
                 {
                     b.HasOne("LearnToDev.Api.Models.Job", "Job")
@@ -573,37 +376,34 @@ namespace LearnToDev.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LearnToDev.Api.Models.SchoolLevel", "SchoolLevel")
+                    b.HasOne("LearnToDev.Api.Models.School", "School")
                         .WithMany("JobRequirements")
-                        .HasForeignKey("SchoolLevelId")
+                        .HasForeignKey("SchoolId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Job");
 
-                    b.Navigation("SchoolLevel");
+                    b.Navigation("School");
                 });
 
-            modelBuilder.Entity("LearnToDev.Api.Models.JobTask", b =>
+            modelBuilder.Entity("LearnToDev.Api.Models.PassedExam", b =>
                 {
-                    b.HasOne("LearnToDev.Api.Models.Job", "Job")
-                        .WithMany("JobTasks")
-                        .HasForeignKey("JobId")
+                    b.HasOne("LearnToDev.Api.Models.Player", "Player")
+                        .WithMany("PassedExams")
+                        .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Job");
-                });
-
-            modelBuilder.Entity("LearnToDev.Api.Models.JobTaskAnswer", b =>
-                {
-                    b.HasOne("LearnToDev.Api.Models.JobTask", "JobTask")
-                        .WithMany("JobTaskAnswers")
-                        .HasForeignKey("JobTaskId")
+                    b.HasOne("LearnToDev.Api.Models.School", "School")
+                        .WithMany("PassedExams")
+                        .HasForeignKey("SchoolId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("JobTask");
+                    b.Navigation("Player");
+
+                    b.Navigation("School");
                 });
 
             modelBuilder.Entity("LearnToDev.Api.Models.Player", b =>
@@ -613,12 +413,6 @@ namespace LearnToDev.Api.Migrations
                         .HasForeignKey("CurrentJobId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("LearnToDev.Api.Models.Housing", "Housing")
-                        .WithMany("Players")
-                        .HasForeignKey("HousingId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -627,50 +421,18 @@ namespace LearnToDev.Api.Migrations
 
                     b.Navigation("CurrentJob");
 
-                    b.Navigation("Housing");
-
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("LearnToDev.Api.Models.PlayerSchoolProgress", b =>
-                {
-                    b.HasOne("LearnToDev.Api.Models.Player", "Player")
-                        .WithMany("SchoolProgresses")
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LearnToDev.Api.Models.School", "School")
-                        .WithMany("PlayerSchoolProgresses")
-                        .HasForeignKey("SchoolId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Player");
-
-                    b.Navigation("School");
-                });
-
-            modelBuilder.Entity("LearnToDev.Api.Models.SchoolLevel", b =>
-                {
-                    b.HasOne("LearnToDev.Api.Models.School", "School")
-                        .WithMany("SchoolLevels")
-                        .HasForeignKey("SchoolId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("School");
                 });
 
             modelBuilder.Entity("LearnToDev.Api.Models.StudyQuestion", b =>
                 {
-                    b.HasOne("LearnToDev.Api.Models.SchoolLevel", "SchoolLevel")
+                    b.HasOne("LearnToDev.Api.Models.School", "School")
                         .WithMany("StudyQuestions")
-                        .HasForeignKey("SchoolLevelId")
+                        .HasForeignKey("SchoolId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SchoolLevel");
+                    b.Navigation("School");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -724,48 +486,23 @@ namespace LearnToDev.Api.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LearnToDev.Api.Models.Housing", b =>
-                {
-                    b.Navigation("Players");
-                });
-
             modelBuilder.Entity("LearnToDev.Api.Models.Job", b =>
                 {
-                    b.Navigation("JobDays");
-
                     b.Navigation("JobRequirements");
 
-                    b.Navigation("JobTasks");
-
                     b.Navigation("Players");
-
-                    b.Navigation("Prerequisites");
-
-                    b.Navigation("RequiredBy");
-                });
-
-            modelBuilder.Entity("LearnToDev.Api.Models.JobTask", b =>
-                {
-                    b.Navigation("JobTaskAnswers");
                 });
 
             modelBuilder.Entity("LearnToDev.Api.Models.Player", b =>
                 {
-                    b.Navigation("JobDays");
-
-                    b.Navigation("SchoolProgresses");
+                    b.Navigation("PassedExams");
                 });
 
             modelBuilder.Entity("LearnToDev.Api.Models.School", b =>
                 {
-                    b.Navigation("PlayerSchoolProgresses");
-
-                    b.Navigation("SchoolLevels");
-                });
-
-            modelBuilder.Entity("LearnToDev.Api.Models.SchoolLevel", b =>
-                {
                     b.Navigation("JobRequirements");
+
+                    b.Navigation("PassedExams");
 
                     b.Navigation("StudyQuestions");
                 });

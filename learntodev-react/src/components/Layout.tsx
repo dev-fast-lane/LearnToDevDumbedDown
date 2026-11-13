@@ -30,7 +30,6 @@ export default function Layout() {
               </NavLink>
               <NavLink to="/schools">Skoler</NavLink>
               <NavLink to="/jobs">Jobber</NavLink>
-              <NavLink to="/housing">Bolig</NavLink>
               {isAdmin && <NavLink to="/admin">Admin</NavLink>}
             </>
           ) : (
