@@ -42,7 +42,7 @@ Rollene `Admin` og `Player` og to testbrukere lages automatisk første gang API-
 
 | Brukernavn | E-post | Passord | Rolle | Tilgang |
 | --- | --- | --- | --- | --- |
-| `admin` | `admin@learntodev.no` | `Admin123!` | Admin | Spillet, og CRUD for skoler, spørsmål og jobber |
+| `admin` | `admin@learntodev.no` | `Admin123!` | Admin | Admin-endepunktene (`/api/admin/...`) |
 | `player` | `player@learntodev.no` | `Player123!` | Player | Spillet |
 
 Nye brukere som registrerer seg, får rollen `Player`. Admin kan bare lages av seederen.

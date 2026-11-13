@@ -24,12 +24,12 @@ public class JobServiceTests
         _service = new JobService(_jobRepository.Object, _playerRepository.Object, NullLogger<JobService>.Instance);
     }
 
-    private static Job NewJob(int id, params School[] requiredSchools)
+    private void GivenJob(params School[] requiredSchools)
     {
-        var job = new Job { Id = id, Name = $"Jobb {id}" };
+        var job = new Job { Id = 1, Name = "Jobb" };
         foreach (var school in requiredSchools)
-            job.JobRequirements.Add(new JobRequirement { JobId = id, SchoolId = school.Id, School = school });
-        return job;
+            job.JobRequirements.Add(new JobRequirement { JobId = 1, SchoolId = school.Id, School = school });
+        _jobRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<Job> { job });
     }
 
     private void GivenPassed(params School[] schools)
@@ -39,87 +39,47 @@ public class JobServiceTests
     }
 
     [Fact]
-    public async Task GetJobsForPlayerAsync_JobWithoutRequirements_IsOpen()
+    public async Task CheckAllJobsAsync_JobWithoutRequirements_IsOpen()
     {
-        _jobRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<Job> { NewJob(1) });
+        GivenJob();
 
-        var jobs = await _service.GetJobsForPlayerAsync(UserId);
+        var job = Assert.Single(await _service.CheckAllJobsAsync(UserId));
 
-        Assert.True(Assert.Single(jobs).IsOpen);
+        Assert.True(job.IsOpen);
+        Assert.Null(job.LockReason);
     }
 
     [Fact]
-    public async Task GetJobsForPlayerAsync_AllRequiredSchoolsPassed_IsOpen()
+    public async Task CheckAllJobsAsync_AllRequiredSchoolsPassed_IsOpen()
     {
         GivenPassed(Frontend, Backend);
-        _jobRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<Job> { NewJob(1, Frontend, Backend) });
+        GivenJob(Frontend, Backend);
 
-        var jobs = await _service.GetJobsForPlayerAsync(UserId);
+        var job = Assert.Single(await _service.CheckAllJobsAsync(UserId));
 
-        Assert.True(Assert.Single(jobs).IsOpen);
+        Assert.True(job.IsOpen);
     }
 
     [Fact]
-    public async Task GetJobsForPlayerAsync_OneSchoolMissing_IsLockedWithReason()
+    public async Task CheckAllJobsAsync_OneSchoolMissing_IsLockedWithReason()
     {
         GivenPassed(Frontend);
-        _jobRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<Job> { NewJob(1, Frontend, Backend) });
+        GivenJob(Frontend, Backend);
 
-        var job = Assert.Single(await _service.GetJobsForPlayerAsync(UserId));
+        var job = Assert.Single(await _service.CheckAllJobsAsync(UserId));
 
         Assert.False(job.IsOpen);
         Assert.Equal("Mangler eksamen i Backend", job.LockReason);
     }
 
     [Fact]
-    public async Task TakeJobAsync_OpenJob_SetsCurrentJob()
+    public async Task CheckAllJobsAsync_NothingPassed_ListsAllMissingSchools()
     {
-        GivenPassed(Frontend);
-        _jobRepository.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(NewJob(1, Frontend));
+        GivenJob(Frontend, Backend);
 
-        var result = await _service.TakeJobAsync(UserId, 1);
+        var job = Assert.Single(await _service.CheckAllJobsAsync(UserId));
 
-        Assert.Equal(ServiceStatus.Success, result.Status);
-        Assert.True(result.Value!.IsCurrent);
-        _playerRepository.Verify(r => r.SetCurrentJobAsync(7, 1), Times.Once);
-    }
-
-    [Fact]
-    public async Task TakeJobAsync_LockedJob_ReturnsConflictAndKeepsJob()
-    {
-        _jobRepository.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(NewJob(1, Frontend, Backend));
-
-        var result = await _service.TakeJobAsync(UserId, 1);
-
-        Assert.Equal(ServiceStatus.Conflict, result.Status);
-        Assert.Equal("Mangler eksamen i Backend og Frontend", result.Message);
-        _playerRepository.Verify(r => r.SetCurrentJobAsync(It.IsAny<int>(), It.IsAny<int?>()), Times.Never);
-    }
-
-    [Fact]
-    public async Task TakeJobAsync_UnknownJob_ReturnsNotFound()
-    {
-        var result = await _service.TakeJobAsync(UserId, 99);
-
-        Assert.Equal(ServiceStatus.NotFound, result.Status);
-    }
-
-    [Fact]
-    public async Task QuitJobAsync_HasJob_RemovesJob()
-    {
-        _player.CurrentJobId = 1;
-
-        var result = await _service.QuitJobAsync(UserId);
-
-        Assert.Equal(ServiceStatus.Success, result.Status);
-        _playerRepository.Verify(r => r.SetCurrentJobAsync(7, null), Times.Once);
-    }
-
-    [Fact]
-    public async Task QuitJobAsync_NoJob_ReturnsConflict()
-    {
-        var result = await _service.QuitJobAsync(UserId);
-
-        Assert.Equal(ServiceStatus.Conflict, result.Status);
+        Assert.False(job.IsOpen);
+        Assert.Equal("Mangler eksamen i Backend og Frontend", job.LockReason);
     }
 }

@@ -62,36 +62,15 @@ public class RepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task SearchAsync_TextAndSchool_FiltersOnBoth()
+    public async Task GetAllAsync_IncludesSchoolAndAnswerOptions()
     {
         var repository = new StudyQuestionRepository(_context);
 
-        var result = await repository.SearchAsync("html", 1);
-
-        var question = Assert.Single(result);
-        Assert.Equal("Hva står HTML for?", question.Text);
-        Assert.Equal("Frontend", question.School.Name);
-        Assert.Equal(2, question.AnswerOptions.Count);
-    }
-
-    [Fact]
-    public async Task SearchAsync_NoFilters_ReturnsAll()
-    {
-        var repository = new StudyQuestionRepository(_context);
-
-        var result = await repository.SearchAsync(null, null);
+        var result = await repository.GetAllAsync();
 
         Assert.Equal(3, result.Count);
-    }
-
-    [Fact]
-    public async Task SearchAsync_TextInOtherSchool_ReturnsEmpty()
-    {
-        var repository = new StudyQuestionRepository(_context);
-
-        var result = await repository.SearchAsync("await", 1);
-
-        Assert.Empty(result);
+        Assert.All(result, q => Assert.Equal(2, q.AnswerOptions.Count));
+        Assert.Equal("Backend", result[0].School.Name);
     }
 
     [Fact]

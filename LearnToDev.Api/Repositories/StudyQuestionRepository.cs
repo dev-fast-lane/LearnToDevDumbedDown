@@ -14,19 +14,9 @@ public class StudyQuestionRepository : IStudyQuestionRepository
         _context = context;
     }
 
-    //The filters are added only when they are given, so the database does the filtering (R-05)
-    public async Task<List<StudyQuestion>> SearchAsync(string? text, int? schoolId)
+    public async Task<List<StudyQuestion>> GetAllAsync()
     {
-        var query = WithDetails();
-
-        if (!string.IsNullOrWhiteSpace(text))
-            //LIKE ignores upper and lower case in SQLite (for a–z)
-            query = query.Where(q => EF.Functions.Like(q.Text, $"%{text.Trim()}%"));
-
-        if (schoolId != null)
-            query = query.Where(q => q.SchoolId == schoolId);
-
-        return await query.OrderBy(q => q.School.Name).ThenBy(q => q.Id).ToListAsync();
+        return await WithDetails().OrderBy(q => q.School.Name).ThenBy(q => q.Id).ToListAsync();
     }
 
     public async Task<StudyQuestion?> GetByIdAsync(int id)

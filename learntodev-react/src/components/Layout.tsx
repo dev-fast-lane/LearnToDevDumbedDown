@@ -3,7 +3,7 @@ import { useAuth } from "../auth/useAuth";
 import { useToast } from "./toast/useToast";
 import "./Layout.css";
 
-// Shared frame around every page: menu, user name and the page content
+// Shared frame around every page: menu, player status and the page content
 export default function Layout() {
   const { user, isAdmin, logout } = useAuth();
   const toast = useToast();
@@ -30,13 +30,7 @@ export default function Layout() {
               </NavLink>
               <NavLink to="/schools">Skoler</NavLink>
               <NavLink to="/jobs">Jobber</NavLink>
-              {isAdmin && (
-                <>
-                  <NavLink to="/admin/schools">Admin: skoler</NavLink>
-                  <NavLink to="/admin/questions">Admin: spørsmål</NavLink>
-                  <NavLink to="/admin/jobs">Admin: jobber</NavLink>
-                </>
-              )}
+              {isAdmin && <NavLink to="/admin">Admin</NavLink>}
             </>
           ) : (
             <>
@@ -46,8 +40,9 @@ export default function Layout() {
           )}
         </nav>
 
+        {/* Only logged in users have a player and can log out */}
         {user && (
-          <section className="player-status" aria-label="Innlogget bruker">
+          <section className="player-status" aria-label="Spillerstatus">
             {user.userName}
             <button className="btn btn-secondary" onClick={handleLogout}>
               Logg ut

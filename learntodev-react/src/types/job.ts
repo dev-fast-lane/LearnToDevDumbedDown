@@ -1,18 +1,6 @@
-import type { SchoolDto } from "./school";
-
-// Mirrors DTOs/JobDtos.cs in LearnToDev.Api
-
-// JobDto
+// Mirrors the Job model in LearnToDev.Api. API sends camelCase
 export interface JobDto {
   id: number;
   name: string;
-  description: string;
-  requiredSchools: SchoolDto[];
-}
-
-// SaveJobDto
-export interface SaveJobDto {
-  name: string;
-  description: string;
-  requiredSchoolIds: number[];
+  wage: number;
 }

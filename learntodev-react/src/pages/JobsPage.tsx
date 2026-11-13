@@ -1,79 +1,66 @@
-import { useState } from "react";
-import { useLoad } from "../hooks/useLoad";
-import { getPlayerJobs, quitJob, takeJob } from "../services/gameService";
+import { useEffect, useState } from "react";
+import { Loading, ErrorMessage, EmptyState } from "../components/StateViews";
+import { getJobs } from "../services/jobService";
 import { ApiError } from "../services/apiError";
-import { useToast } from "../components/toast/useToast";
-import { EmptyState, ErrorMessage, Loading } from "../components/StateViews";
-import type { PlayerJobDto } from "../types/game";
+import type { JobDto } from "../types/job";
 
-// Every job, open or locked. The player can take an open job or quit the current one
 export default function JobsPage() {
-  const { data: jobs, loading, error, reload } = useLoad(getPlayerJobs);
-  const [busy, setBusy] = useState(false);
-  const toast = useToast();
+  const [jobs, setJobs] = useState<JobDto[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [attempt, setAttempt] = useState(0); // Used to trigger a re-fetch on retry
 
-  async function run(action: () => Promise<unknown>, success: string) {
-    if (busy) return;
-    setBusy(true);
-    try {
-      await action();
-      toast(success, "success");
-      reload();
-    } catch (err) {
-      // e.g. 409 "Mangler eksamen i Backend"
-      toast(err instanceof ApiError ? err.message : "Noe gikk galt. Prøv igjen.", "error");
-    } finally {
-      setBusy(false);
+  useEffect(() => {
+    let cancelled = false; // ignore the answer if the page is left before it arrives
+
+    async function fetchJobs() {
+      try {
+        const data = await getJobs(); // jobService calls /api/jobs through apiClient
+        if (!cancelled) setJobs(data);
+      } catch (err) {
+        if (!cancelled) {
+          setError(err instanceof ApiError ? err.message : "Kunne ikke hente jobbene.");
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
     }
+
+    fetchJobs();
+    return () => {
+      cancelled = true;
+    };
+  }, [attempt]);
+
+  function retry() {
+    setLoading(true);
+    setError(null);
+    setAttempt((prev) => prev + 1); // Trigger a re-fetch by changing the attempt state
   }
 
+  //Only one of these states is shown at a time
   if (loading) return <Loading />;
-  if (error || !jobs) return <ErrorMessage message={error ?? "Fant ikke jobbene."} onRetry={reload} />;
+  if (error) return <ErrorMessage message={error} onRetry={retry} />;
+  if (jobs.length === 0) return <EmptyState text="Ingen jobber enda." />;
 
   return (
-    <>
-      <h1>Jobber</h1>
-      <p>En jobb låses opp når du har bestått eksamen på alle skolene den krever.</p>
-
-      {jobs.length === 0 ? (
-        <EmptyState text="Ingen jobber ennå." />
-      ) : (
-        <div className="cards">
+    <div className="table-wrap">
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Jobb</th>
+            <th>Lønn</th>
+          </tr>
+        </thead>
+        <tbody>
           {jobs.map((job) => (
-            <section key={job.id} className="card">
-              <h2>{job.name}</h2>
-              <JobBadge job={job} />
-              <p>{job.description}</p>
-              <p className="muted">
-                Krever: {job.requiredSchools.length > 0 ? job.requiredSchools.join(", ") : "ingenting"}
-              </p>
-
-              {/* R-04: the button depends on the job's state */}
-              {job.isCurrent ? (
-                <button className="btn btn-secondary" disabled={busy} onClick={() => run(quitJob, "Du sa opp jobben.")}>
-                  Si opp
-                </button>
-              ) : (
-                job.isOpen && (
-                  <button
-                    className="btn"
-                    disabled={busy}
-                    onClick={() => run(() => takeJob(job.id), `Du jobber nå som ${job.name}.`)}
-                  >
-                    Ta jobben
-                  </button>
-                )
-              )}
-            </section>
+            <tr key={job.id}>
+              <td>{job.name}</td>
+              <td>{job.wage}</td>
+            </tr>
           ))}
-        </div>
-      )}
-    </>
+        </tbody>
+      </table>
+    </div>
   );
-}
-
-function JobBadge({ job }: { job: PlayerJobDto }) {
-  if (job.isCurrent) return <span className="badge badge-success">Din jobb</span>;
-  if (job.isOpen) return <span className="badge">Åpen</span>;
-  return <span className="badge badge-danger">Låst: {job.lockReason}</span>;
 }

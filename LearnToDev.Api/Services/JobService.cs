@@ -1,11 +1,10 @@
-using LearnToDev.Api.DTOs;
 using LearnToDev.Api.Models;
 using LearnToDev.Api.Repositories.Interfaces;
 using LearnToDev.Api.Services.Interfaces;
 
 namespace LearnToDev.Api.Services;
 
-//The job rules (R-03): a job is open when the player has passed every school it requires
+// The job rule (R-03): a job is open when the player has passed every school it requires
 public class JobService : IJobService
 {
     private readonly IJobRepository _jobRepository;
@@ -19,49 +18,23 @@ public class JobService : IJobService
         _logger = logger;
     }
 
-    public async Task<List<PlayerJobDto>> GetJobsForPlayerAsync(string userId)
+    public async Task<List<JobEligibility>> CheckAllJobsAsync(string userId)
     {
         var player = await _playerRepository.GetOrCreateAsync(userId);
         var jobs = await _jobRepository.GetAllAsync();
 
-        return jobs.Select(job => ToPlayerJobDto(job, player)).ToList();
-    }
-
-    public async Task<ServiceResult<PlayerJobDto>> TakeJobAsync(string userId, int jobId)
-    {
-        var job = await _jobRepository.GetByIdAsync(jobId);
-        if (job == null)
-            return ServiceResult<PlayerJobDto>.NotFound("Fant ikke jobben.");
-
-        var player = await _playerRepository.GetOrCreateAsync(userId);
-
-        var lockReason = GetLockReason(job, player);
-        if (lockReason != null)
+        var results = jobs.Select(job =>
         {
-            _logger.LogWarning("User {UserId} tried to take locked job {JobId}", userId, jobId);
-            return ServiceResult<PlayerJobDto>.Conflict(lockReason);
-        }
+            var lockReason = GetLockReason(job, player);
+            return new JobEligibility(job.Id, job.Name, lockReason == null, lockReason);
+        }).ToList();
 
-        await _playerRepository.SetCurrentJobAsync(player.Id, job.Id);
-        player.CurrentJobId = job.Id;
-        _logger.LogInformation("User {UserId} took job {JobId}", userId, jobId);
-
-        return ServiceResult<PlayerJobDto>.Ok(ToPlayerJobDto(job, player));
+        _logger.LogDebug("Player {PlayerId} has {OpenCount} of {JobCount} jobs open",
+            player.Id, results.Count(r => r.IsOpen), results.Count);
+        return results;
     }
 
-    public async Task<ServiceResult<bool>> QuitJobAsync(string userId)
-    {
-        var player = await _playerRepository.GetOrCreateAsync(userId);
-        if (player.CurrentJobId == null)
-            return ServiceResult<bool>.Conflict("Du har ingen jobb å si opp.");
-
-        await _playerRepository.SetCurrentJobAsync(player.Id, null);
-        _logger.LogInformation("User {UserId} quit job {JobId}", userId, player.CurrentJobId);
-
-        return ServiceResult<bool>.Ok(true);
-    }
-
-    //null when the job is open, otherwise e.g. "Mangler eksamen i Frontend og Backend"
+    // null when the job is open, otherwise e.g. "Mangler eksamen i Backend og Frontend"
     private static string? GetLockReason(Job job, Player player)
     {
         var missing = job.JobRequirements
@@ -76,20 +49,7 @@ public class JobService : IJobService
         return $"Mangler eksamen i {JoinWithAnd(missing)}";
     }
 
-    private static PlayerJobDto ToPlayerJobDto(Job job, Player player)
-    {
-        var lockReason = GetLockReason(job, player);
-        return new PlayerJobDto(
-            job.Id,
-            job.Name,
-            job.Description,
-            job.JobRequirements.Select(r => r.School.Name).OrderBy(n => n).ToList(),
-            lockReason == null,
-            lockReason,
-            player.CurrentJobId == job.Id);
-    }
-
-    //Joins a list the Norwegian way: "A", "A og B", "A, B og C"
+    // Joins a list the Norwegian way: "A", "A og B", "A, B og C"
     private static string JoinWithAnd(List<string> items)
     {
         if (items.Count == 1)

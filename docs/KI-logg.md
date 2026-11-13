@@ -96,9 +96,9 @@ Verifisering: tsc, eslint og npm run build ga 0 feil. Testet registreringsskjema
 
 Dato: 13-11-2026
 Verktøy brukt: Claude
-Hva ble spurt: Forenkle hele prosjektet til en enklere quiz-app som fortsatt dekker kravene R-01–R-12, i et nytt repo (LearnToDevDumbedDown) med kopi av Kanban-brettet (#58).
-Hva ble brukt: Jeg valgte omfanget (bare skoler, spørsmål, eksamen og jobber, uten økonomi og bolig). Claude skrev den nye datamodellen, migreringen, repositoriene, ExamService og JobService, controllerne, DTO-ene, testene, React-sidene og oppdateringene i docs, og laget sakene på det nye brettet med omskrevet tekst.
-Verifisering: dotnet build -warnaserror ga 0 advarsler, og dotnet test ga 28 av 28 bestått. npm run lint og npm run build ga 0 feil. Kjørte API-et og React-appen og testet i nettleseren: innlogging som spiller og admin, eksamen (bestått), låst og åpen jobb, søk og filter på spørsmål, validering på klient og server (blant annet to riktige svar gir 400), CRUD for jobb med skolekrav, og 403 når en spiller kaller admin-API-et. Sjekket også mobilbredde (375 px) uten vannrett scroll.
+Hva ble spurt: Forenkle prosjektet til en enklere quiz-app som fortsatt kan dekke kravene R-01–R-12, i et nytt repo (LearnToDevDumbedDown) med kopi av Kanban-brettet (#58). Funksjonene som ikke var laget ennå (CRUD, søk, eksamen, jobbside) skal gruppa lage selv.
+Hva ble brukt: Jeg valgte omfanget (bare skoler, spørsmål, eksamen og jobber, uten økonomi og bolig). Claude skrev om det som allerede var ferdig til den nye modellen: modellklassene, DbContext, en ny første migrering, seed-filene, repositoriene, JobService (regelen for låste jobber) og testene for dem, og fjernet koden for det som ble kuttet. Claude oppdaterte også docs og laget sakene på det nye brettet med omskrevet tekst.
+Verifisering: dotnet build -warnaserror ga 0 advarsler, og dotnet test var grønn. npm run lint og npm run build ga 0 feil. Startet API-et på en tom database og sjekket at migreringen og seedingen gikk gjennom.
 ```
 ### Ingvald
 ```
