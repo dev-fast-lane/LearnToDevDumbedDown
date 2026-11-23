@@ -37,6 +37,12 @@ Verktøy brukt: Claude
 Hva ble spurt: Veiledning steg for steg til API-tjenestelaget i React (#64): felles klient (apiClient), feilhåndtering av ProblemDetails (ApiError) og authService, med en grundig gjennomgang av koden.
 Hva ble brukt: Filene skrev jeg selv etter kodeforslag og forklaring fra Claude. Claude kjørte API-et for å se hvordan feilene faktisk ser ut før feilhåndteringen ble laget, foreslo kommentarene og skrev PR-teksten.
 Verifisering: tsc og eslint ga 0 feil. Claude kalte authService gjennom Vite-proxyen mot API-et med en midlertidig database: feil passord, valideringsfeil, svakt passord, registrering, me, logout og innlogging. Alle ga riktig svar eller ApiError, og cookien var ikke synlig for JavaScript. Søk viste ingen fetch utenfor src/services.
+
+Dato: 23-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Veiledning steg for steg til startskjermen (#15): PlayerStatusDto, GameController med GET api/game/status, typen og gameService i React, og StartPage med betinget visning. Fikk også hjelp til å kjøre npm i riktig mappe.
+Hva ble brukt: DTO-en, controlleren, typen og gameService skrev jeg selv etter kodeforslag og forklaring fra Claude. StartPage fikk jeg som hel fil fra Claude etter at jeg ba om det, og gikk gjennom den. Claude skrev kommentarene i StartPage og GameController og ryddet bort package-lock-endringer som npm hadde laget.
+Verifisering: dotnet build ga 0 advarsler og dotnet test 9 av 9. npm run lint og npm run build ga 0 feil. Testet startsiden i nettleseren som player. Claude kalte endepunktet mot en midlertidig database (401 uten innlogging, og én spiller selv etter flere kall), og testet startsiden gjennom Vite-proxyen både uten og med jobb og beståtte eksamener.
 ```
 ### Sebastian
 ```
