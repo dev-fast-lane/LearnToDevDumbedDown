@@ -28,6 +28,7 @@ builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 
 //Services: the game rules. Scoped because they use the repositories above
 builder.Services.AddScoped<IJobService, JobService>();
+builder.Services.AddScoped<IExamService, ExamService>();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     {
