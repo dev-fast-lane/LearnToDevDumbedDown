@@ -105,6 +105,12 @@ Verktøy brukt: Claude
 Hva ble spurt: Forenkle prosjektet til en enklere quiz-app som fortsatt kan dekke kravene R-01–R-12, i et nytt repo (LearnToDevDumbedDown) med kopi av Kanban-brettet (#58). Funksjonene som ikke var laget ennå (CRUD, søk, eksamen, jobbside) skal gruppa lage selv.
 Hva ble brukt: Jeg valgte omfanget (bare skoler, spørsmål, eksamen og jobber, uten økonomi og bolig). Claude skrev om det som allerede var ferdig til den nye modellen: modellklassene, DbContext, en ny første migrering, seed-filene, repositoriene, JobService (regelen for låste jobber) og testene for dem, og fjernet koden for det som ble kuttet. Claude oppdaterte også docs og laget sakene på det nye brettet med omskrevet tekst.
 Verifisering: dotnet build -warnaserror ga 0 advarsler, og dotnet test var grønn. npm run lint og npm run build ga 0 feil. Startet API-et på en tom database og sjekket at migreringen og seedingen gikk gjennom.
+
+Dato: 23-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Veiledning steg for steg til CRUD for School (#24): DTO-er (record mot class), SchoolsController med statuskoder og roller, type og service i React, og admin-siden med liste, sletting og skjema for opprett og rediger.
+Hva ble brukt: SchoolDto, SaveSchoolDto, GetById og typen og servicen i React skrev jeg selv etter forklaring. Claude viste GetAll, Create, Update og Delete i controlleren, rettet feil (manglende komma, feil rute og dobbel import) og skrev ferdig admin-siden (skjemaet og redigeringen) da jeg ba om det. Jeg gikk gjennom koden og la den inn.
+Verifisering: dotnet build og npm run build ga 0 advarsler, og dotnet test var grønn. Claude testet endepunktene mot API-et (401, 403, 400, 201, 200, 204 og 404) og hele admin-siden i nettleseren: tomt navn, opprett, rediger, avbryt, slett og mobilbredde.
 ```
 ### Ingvald
 ```

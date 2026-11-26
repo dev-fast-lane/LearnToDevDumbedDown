@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import SchoolsPage from "./pages/SchoolsPage";
 import JobsPage from "./pages/JobsPage";
 import AdminPage from "./pages/AdminPage";
+import AdminSchoolsPage from "./pages/AdminSchoolsPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage";
 import RequireAuth from "./auth/RequireAuth";
@@ -28,6 +29,7 @@ export default function App() {
           {/* Admins only */}
           <Route element={<RequireAdmin />}>
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin/schools" element={<AdminSchoolsPage />} />
           </Route>
         </Route>
 
