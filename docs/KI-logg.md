@@ -138,6 +138,12 @@ Hva ble spurt: Hjelp til felles design i React (#119): valg av CSS-løsning, fel
 Hva ble brukt: Forslag til index.css med variabler, StateViews, FormField, ToastProvider/useToast, fieldErrorsFrom og eksempelsidene JobsPage og LoginPage. Jeg la filene inn selv og rettet feil underveis (feil import fra react-router-dom, manglende id i FormField, klassenavn som ikke stemte med CSS-en, feil rute og feltnavn mot API-et). Claude foreslo menyen med like brede knapper på mobil og rettelsen for lintregelen set-state-in-effect og for FormEvent (SubmitEvent).
 Verifisering: Kjørte npm run lint og npm run build. Sjekket siden på 375 px i DevTools. Sammenlignet feltnavnene i LoginPage med LoginDto og ruten med AuthController.
 
+Dato: 13 & 27-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Hjelp til å skrive kapittel 4 i rapporten (databasestruktur og datatilgang, #41): følge word-malen.
+Hva ble brukt: Claude skrev utkast som jeg oversatte til engelsk. 
+Verifisering: sjekket kode-referansene i prosjektet og tok direkte screenshot derfra.
+
 Dato:
 Verktøy brukt: Claude/ Chat-GPT/ Sikt-KI-chat/ osv.
 Hva ble spurt:  
