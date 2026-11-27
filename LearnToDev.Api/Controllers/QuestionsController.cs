@@ -71,7 +71,10 @@ public class QuestionsController : ControllerBase
         question.Id = id;
 
         if (!await _questions.UpdateAsync(question))
+        {
+            _logger.LogWarning("Tried to update question {QuestionId}, which does not exist", id);
             return NotFound();
+        }
 
         _logger.LogInformation("Question {QuestionId} updated", id);
         return NoContent();
@@ -82,7 +85,10 @@ public class QuestionsController : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         if (!await _questions.DeleteAsync(id))
+        {
+            _logger.LogWarning("Tried to delete question {QuestionId}, which does not exist", id);
             return NotFound();
+        }
 
         _logger.LogInformation("Question {QuestionId} deleted", id);
         return NoContent();
@@ -94,7 +100,8 @@ public class QuestionsController : ControllerBase
     {
         if (await _schools.GetByIdAsync(schoolId) != null)
             return true;
-
+        
+        _logger.LogWarning("Rejected question with unknown school {SchoolId}", schoolId);
         ModelState.AddModelError(nameof(SaveQuestionDto.SchoolId), "Fant ikke skolen.");
         return false;
     }

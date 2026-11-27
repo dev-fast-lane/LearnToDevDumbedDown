@@ -49,6 +49,8 @@ public class AuthController : ControllerBase
             }
         }
         //Samme svar om brukeren ikke finnes eller passordet er feil, så ingen kan finne ut hvilke brukere som finnes
+        //Logger id-en hvis brukeren finnes, men aldri det som ble skrevet inn, siden det kan være e-post
+        _logger.LogWarning("Mislykket innlogging for bruker {UserId}.", user?.Id ?? "ukjent");
         return Unauthorized(new { message = "Ugyldig innlogging." });
     }
 
@@ -77,6 +79,8 @@ public class AuthController : ControllerBase
         }
 
         //Feilene fra Identity sendes i samme format som valideringsfeilene, så React kan vise dem likt
+        //Feilkodene, for eksempel DuplicateUserName, forteller hvorfor uten å logge navn eller e-post
+        _logger.LogWarning("Registrering avvist: {ErrorCodes}.", result.Errors.Select(e => e.Code));
         foreach (var error in result.Errors)
         {
             ModelState.AddModelError(string.Empty, error.Description);
