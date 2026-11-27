@@ -74,6 +74,60 @@ public class RepositoryTests : IDisposable
     }
 
     [Fact]
+    public async Task SearchAsync_NoFilters_ReturnsAllQuestions()
+    {
+        var repository = new StudyQuestionRepository(_context);
+
+        var result = await repository.SearchAsync(null, null);
+
+        Assert.Equal(3, result.Count);
+    }
+
+    [Fact]
+    public async Task SearchAsync_Text_IgnoresCase()
+    {
+        var repository = new StudyQuestionRepository(_context);
+
+        var result = await repository.SearchAsync("  html ", null);
+
+        var question = Assert.Single(result);
+        Assert.Equal("Hva står HTML for?", question.Text);
+    }
+
+    [Fact]
+    public async Task SearchAsync_School_ReturnsOnlyThatSchool()
+    {
+        var repository = new StudyQuestionRepository(_context);
+
+        var result = await repository.SearchAsync(null, 1);
+
+        Assert.Equal(2, result.Count);
+        Assert.All(result, q => Assert.Equal(1, q.SchoolId));
+    }
+
+    [Fact]
+    public async Task SearchAsync_TextAndSchool_BothMustMatch()
+    {
+        var repository = new StudyQuestionRepository(_context);
+
+        //"hva" is in one Frontend and one Backend question, so only the school filter can pick the right one
+        var result = await repository.SearchAsync("hva", 2);
+
+        var question = Assert.Single(result);
+        Assert.Equal("Hva gjør await i C#?", question.Text);
+    }
+
+    [Fact]
+    public async Task SearchAsync_NoMatch_ReturnsEmptyList()
+    {
+        var repository = new StudyQuestionRepository(_context);
+
+        var result = await repository.SearchAsync("finnes ikke", null);
+
+        Assert.Empty(result);
+    }
+
+    [Fact]
     public async Task GetOrCreateAsync_CalledTwice_CreatesOnePlayer()
     {
         var repository = new PlayerRepository(_context);

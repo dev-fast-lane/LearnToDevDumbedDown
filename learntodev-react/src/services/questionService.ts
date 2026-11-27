@@ -2,8 +2,15 @@ import { del, get, post, put } from "./apiClient";
 import type { QuestionDto, SaveQuestionDto } from "../types/question";
 
 // All calls to /api/questions (admin only). Components use this, not fetch
-export function getQuestions(): Promise<QuestionDto[]> {
-  return get<QuestionDto[]>("/questions");
+
+// Both filters are optional (#25). URLSearchParams adds & and encodes spaces, # and æøå
+export function getQuestions(search?: string, schoolId?: number): Promise<QuestionDto[]> {
+  const params = new URLSearchParams();
+  if (search && search.trim() !== "") params.set("search", search.trim());
+  if (schoolId !== undefined) params.set("schoolId", String(schoolId));
+
+  const query = params.toString(); // e.g. "search=html&schoolId=1", or "" without filters
+  return get<QuestionDto[]>(query ? `/questions?${query}` : "/questions");
 }
 
 export function getQuestion(id: number): Promise<QuestionDto> {
