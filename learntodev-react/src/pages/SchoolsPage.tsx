@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { Loading, ErrorMessage, EmptyState } from "../components/StateViews";
-import { getSchools } from "../services/schoolService";
+import { getGameSchools } from "../services/gameService";
 import { ApiError } from "../services/apiError";
-import type { SchoolDto } from "../types/school";
+import type { PlayerSchoolDto } from "../types/game";
 
-// Midlertidig skoleliste med vei inn til eksamen (#28). Den ordentlige skoleoversikten kommer i #27
+// Skoleoversikten (#27, R-04): ett kort per skole med om eksamen er bestått, og vei videre til eksamen
 export default function SchoolsPage() {
   // null til svaret fra API-et har kommet, så siden vet at den fortsatt laster
-  const [schools, setSchools] = useState<SchoolDto[] | null>(null);
+  const [schools, setSchools] = useState<PlayerSchoolDto[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // Henter skolene én gang når siden åpnes
@@ -17,7 +17,7 @@ export default function SchoolsPage() {
 
     async function fetchSchools() {
       try {
-        const data = await getSchools();
+        const data = await getGameSchools();
         if (!cancelled) setSchools(data);
       } catch (err) {
         if (!cancelled)
@@ -45,9 +45,17 @@ export default function SchoolsPage() {
         schools.map((school) => (
           <section className="card" key={school.id}>
             <h2>{school.name}</h2>
+
+            {/* Betinget rendering (R-04): merket og knappeteksten avhenger av om eksamen er bestått */}
+            <p>
+              <span className={school.passed ? "badge badge-success" : "badge"}>
+                {school.passed ? "Bestått" : "Ikke bestått"}
+              </span>
+            </p>
+
             <p>{school.description}</p>
             <Link className="btn" to={`/schools/${school.id}/exam`}>
-              Ta eksamen
+              {school.passed ? "Ta eksamen igjen" : "Ta eksamen"}
             </Link>
           </section>
         ))

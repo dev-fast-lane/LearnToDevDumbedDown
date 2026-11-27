@@ -168,4 +168,38 @@ public class ExamServiceTests
 
         Assert.Equal(ServiceStatus.Conflict, result.Status);
     }
+
+    //Skolene GetAllAsync gir. Rekkefølgen er bevisst ikke sortert, så testen viser at servicen sorterer
+    private void GivenSchools(params School[] schools)
+    {
+        _schoolRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(schools.ToList());
+    }
+
+    [Fact]
+    public async Task GetSchoolsAsync_PassedOne_OnlyThatSchoolIsPassedAndSortedByName()
+    {
+        GivenSchools(
+            new School { Id = 1, Name = "Frontend" },
+            new School { Id = 2, Name = "Backend" });
+        _player.PassedExams.Add(new PassedExam { PlayerId = _player.Id, SchoolId = 1 });
+
+        var schools = await _service.GetSchoolsAsync(UserId);
+
+        Assert.Equal(new[] { "Backend", "Frontend" }, schools.Select(s => s.Name));
+        Assert.True(schools.Single(s => s.Id == 1).Passed);
+        Assert.False(schools.Single(s => s.Id == 2).Passed);
+    }
+
+    [Fact]
+    public async Task GetSchoolsAsync_NewPlayer_NoSchoolIsPassed()
+    {
+        GivenSchools(
+            new School { Id = 1, Name = "Frontend" },
+            new School { Id = 2, Name = "Backend" });
+
+        var schools = await _service.GetSchoolsAsync(UserId);
+
+        Assert.Equal(2, schools.Count);
+        Assert.All(schools, s => Assert.False(s.Passed));
+    }
 }

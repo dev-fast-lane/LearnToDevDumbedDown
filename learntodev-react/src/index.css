@@ -94,6 +94,20 @@ h1, h2, h3 {
     padding: var(--space-3);
     margin-bottom: var(--space-3);
 }
+
+/* Merke for status, f.eks. «Bestått» på skolekortene */
+.badge {
+    display: inline-block;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    background: var(--color-bg);
+    color: var(--color-muted);
+}
+.badge-success {
+    background: var(--color-success-bg);
+    color: var(--color-success);
+}
 /* Tables: scroll inside wrapper, not whole page on narrow screens/phone */
 .table-wrap {
     overflow-x: auto;

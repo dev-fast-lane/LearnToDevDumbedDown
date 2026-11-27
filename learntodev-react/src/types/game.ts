@@ -46,3 +46,10 @@ export interface ExamFeedbackDto {
     correctAnswer: string;
     explanation: string;
 }
+
+export interface PlayerSchoolDto {
+    id: number;
+    name: string;
+    description: string;
+    passed: boolean;
+}

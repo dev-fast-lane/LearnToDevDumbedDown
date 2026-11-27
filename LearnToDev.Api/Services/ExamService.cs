@@ -92,4 +92,19 @@ public class ExamService : IExamService
 
         return ServiceResult<ExamResultDto>.Ok(new ExamResultDto(correct, feedback.Count, passed, feedback));
     }
+
+    public async Task<List<PlayerSchoolDto>> GetSchoolsAsync(string userId)
+    {
+        var schools = await _schoolRepository.GetAllAsync();
+
+        //GetOrCreate: en ny spiller har ingen beståtte eksamener, og da er alle skolene «ikke bestått»
+        var player = await _playerRepository.GetOrCreateAsync(userId);
+        var passedIds = player.PassedExams.Select(e => e.SchoolId).ToHashSet();
+
+        //Sortert på navn, så kortene alltid kommer i samme rekkefølge
+        return schools
+            .OrderBy(s => s.Name)
+            .Select(s => new PlayerSchoolDto(s.Id, s.Name, s.Description, passedIds.Contains(s.Id)))
+            .ToList();
+    }
 }

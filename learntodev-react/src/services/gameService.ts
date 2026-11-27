@@ -1,5 +1,5 @@
 ﻿import { get, post } from "./apiClient";
-import type { ExamDto, ExamResultDto, PlayerStatusDto, SubmitExamDto } from "../types/game";
+import type { ExamDto, ExamResultDto, PlayerSchoolDto, PlayerStatusDto, SubmitExamDto } from "../types/game";
 
 // Alle kall til /api/game. Komponentene bruker denne, ikke fetch
 export function getStatus(): Promise<PlayerStatusDto> {
@@ -14,4 +14,9 @@ export function startExam(schoolId: number): Promise<ExamDto> {
 // Leverer svarene og får resultatet tilbake (POST /api/game/exams/{schoolId})
 export function submitExam(schoolId: number, dto: SubmitExamDto): Promise<ExamResultDto> {
     return post<ExamResultDto>(`/game/exams/${schoolId}`, dto);
+}
+
+// Skoleoversikten: alle skolene med om spilleren har bestått (GET /api/game/schools)
+export function getGameSchools(): Promise<PlayerSchoolDto[]> {
+    return get<PlayerSchoolDto[]>("/game/schools");
 }

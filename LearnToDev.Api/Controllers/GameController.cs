@@ -73,6 +73,19 @@ public class GameController : ControllerBase
         return ToActionResult(result);
     }
 
+    //Skoleoversikten: alle skolene, med om spilleren har bestått eksamen i hver av dem
+    [HttpGet("schools")]
+    public async Task<ActionResult<List<PlayerSchoolDto>>> GetSchools()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+        {
+            return Unauthorized();
+        }
+
+        return Ok(await _examService.GetSchoolsAsync(userId));
+    }
+
     //Gjør om utfallet fra servicen til riktig statuskode. Feilene sendes som ProblemDetails
     private ActionResult<T> ToActionResult<T>(ServiceResult<T> result)
     {
