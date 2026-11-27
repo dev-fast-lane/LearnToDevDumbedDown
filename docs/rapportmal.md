@@ -177,6 +177,8 @@ flowchart TD
     J -- Nei --> K[Låst, med årsak]
     J -- Ja --> L[Ta jobben]
     L --> M[Si opp]
+    K --> I
+    M --> I
 ```
 
 **Admin.** Admin kan alt spilleren kan, og vedlikeholder i tillegg innholdet. De tre adminsidene virker likt: samme skjema brukes til ny og endring, og alt valideres både i klienten og på serveren.
