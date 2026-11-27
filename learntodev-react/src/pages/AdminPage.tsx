@@ -10,6 +10,9 @@ export default function AdminPage() {
       <Link className="btn" to="/admin/questions">
         Spørsmål
       </Link>
+        <Link className="btn" to="/admin/jobs">
+            Jobber
+        </Link>
     </>
   );
 }

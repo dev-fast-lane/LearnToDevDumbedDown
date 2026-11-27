@@ -49,14 +49,12 @@ export default function JobsPage() {
         <thead>
           <tr>
             <th>Jobb</th>
-            <th>Lønn</th>
           </tr>
         </thead>
         <tbody>
           {jobs.map((job) => (
             <tr key={job.id}>
               <td>{job.name}</td>
-              <td>{job.wage}</td>
             </tr>
           ))}
         </tbody>
