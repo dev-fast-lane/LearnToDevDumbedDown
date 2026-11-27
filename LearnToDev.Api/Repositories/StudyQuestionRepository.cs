@@ -1,5 +1,3 @@
-using System.IO.Compression;
-using System.Security.Cryptography.X509Certificates;
 using LearnToDev.Api.Data;
 using LearnToDev.Api.Models;
 using LearnToDev.Api.Repositories.Interfaces;
