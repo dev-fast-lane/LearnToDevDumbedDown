@@ -24,7 +24,8 @@ public class StudyQuestionRepository : IStudyQuestionRepository
         return await WithDetails().FirstOrDefaultAsync(q => q.Id == id);
     }
 
-    // Adds a each function
+    //Admin search (#25, R-05). Both filters are optional, and the filtering runs in the database.
+    //ToLower on both sides ignores case. Note: SQLite's lower() only knows A-Z, so Æ/Ø/Å still differ from æ/ø/å
     public async Task<List<StudyQuestion>> SearchAsync(string? search, int? schoolId)
     {
         var query = WithDetails();
