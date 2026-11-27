@@ -49,6 +49,12 @@ Verktøy brukt: Claude
 Hva ble spurt: Veiledning steg for steg til CRUD for Job med skolekrav (#23): JobDto og SaveJobDto, JobsController med sjekk av ukjente skoler, typen og jobService i React, og admin-siden med avkrysning for skolene.
 Hva ble brukt: DTO-ene, JobsController, typen, jobService, ruten og lenken skrev jeg selv etter kodeforslag og forklaring fra Claude. AdminJobsPage fikk jeg som hel fil fra Claude, bygd på samme mønster som AdminSchoolsPage, og gikk gjennom den. Claude sjekket med en midlertidig test at JobRepository.UpdateAsync bytter ut skolekravene riktig før controlleren ble laget.
 Verifisering: dotnet build ga 0 advarsler og dotnet test 21 av 21. npm run lint og npm run build ga 0 feil. Claude kalte alle endepunktene mot en midlertidig database: 401 og 403 uten admin, 201 med duplikat fjernet, 400 for ukjent skole og tomt navn, PUT som byttet og fjernet krav, 404 for jobb som ikke finnes, og sletting der spilleren ble arbeidsledig. Claude testet også admin-siden i nettleseren: opprette med skoler, redigere med riktige bokser krysset av, tomt navn og sletting.
+
+Dato: 27-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Veiledning til validering og logging i API-et (#39): hvilke DTO-er som manglet norske meldinger eller validering, og hvilke avviste handlinger som ikke ble logget.
+Hva ble brukt: Claude kartla API-et og ga kodeforslag. Jeg byttet til norske meldinger i SaveQuestionDto, SaveAnswerDto, StudyQuestionValidator og QuestionsController, la til validering i ExamAnswerDto, og la inn LogWarning for avviste handlinger i ExamService, JobService, QuestionsController og AuthController. Loggene bruker bare id-er, ikke brukernavn eller e-post. Claude hjalp meg å rette to feil underveis: en løkke i ExamService som ble kuttet av, og to suksesslinjer i QuestionsController som var byttet ut.
+Verifisering: dotnet build ga 0 advarsler og dotnet test 44 av 44. En test fanget at Delete svarte 404 også når spørsmålet fantes, før det ble rettet. Claude sendte 14 avviste forespørsler mot API-et med en midlertidig database og sjekket statuskode (400, 401, 404 eller 409), norsk melding og logglinje for hver.
 ```
 ### Sebastian
 ```
