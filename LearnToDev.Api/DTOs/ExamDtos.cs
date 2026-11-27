@@ -18,7 +18,11 @@ public class SubmitExamDto
 
 public class ExamAnswerDto
 {
+    [Range(1, int.MaxValue, ErrorMessage = "Ugyldig spørsmål.")]
     public int QuestionId { get; set; }
+
+    // 0 betyr at spilleren ikke valgte noe svar
+    [Range(1, int.MaxValue, ErrorMessage = "Velg et svar på alle spørsmålene.")]
     public int AnswerOptionId { get; set; }
 }
 
