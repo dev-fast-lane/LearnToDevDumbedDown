@@ -24,6 +24,7 @@ public class StudyQuestionRepository : IStudyQuestionRepository
         return await WithDetails().FirstOrDefaultAsync(q => q.Id == id);
     }
 
+    // Adds a each function
     public async Task<List<StudyQuestion>> SearchAsync(string? search, int? schoolId)
     {
         var query = WithDetails();
