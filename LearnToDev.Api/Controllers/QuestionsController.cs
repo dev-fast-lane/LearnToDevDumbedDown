@@ -95,7 +95,7 @@ public class QuestionsController : ControllerBase
         if (await _schools.GetByIdAsync(schoolId) != null)
             return true;
 
-        ModelState.AddModelError(nameof(SaveQuestionDto.SchoolId), "The school does not exist.");
+        ModelState.AddModelError(nameof(SaveQuestionDto.SchoolId), "Fant ikke skolen.");
         return false;
     }
 }
