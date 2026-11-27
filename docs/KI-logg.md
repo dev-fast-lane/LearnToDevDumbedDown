@@ -43,6 +43,12 @@ Verktøy brukt: Claude
 Hva ble spurt: Veiledning steg for steg til startskjermen (#15): PlayerStatusDto, GameController med GET api/game/status, typen og gameService i React, og StartPage med betinget visning. Fikk også hjelp til å kjøre npm i riktig mappe.
 Hva ble brukt: DTO-en, controlleren, typen og gameService skrev jeg selv etter kodeforslag og forklaring fra Claude. StartPage fikk jeg som hel fil fra Claude etter at jeg ba om det, og gikk gjennom den. Claude skrev kommentarene i StartPage og GameController og ryddet bort package-lock-endringer som npm hadde laget.
 Verifisering: dotnet build ga 0 advarsler og dotnet test 9 av 9. npm run lint og npm run build ga 0 feil. Testet startsiden i nettleseren som player. Claude kalte endepunktet mot en midlertidig database (401 uten innlogging, og én spiller selv etter flere kall), og testet startsiden gjennom Vite-proxyen både uten og med jobb og beståtte eksamener.
+
+Dato: 27-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Veiledning steg for steg til CRUD for Job med skolekrav (#23): JobDto og SaveJobDto, JobsController med sjekk av ukjente skoler, typen og jobService i React, og admin-siden med avkrysning for skolene.
+Hva ble brukt: DTO-ene, JobsController, typen, jobService, ruten og lenken skrev jeg selv etter kodeforslag og forklaring fra Claude. AdminJobsPage fikk jeg som hel fil fra Claude, bygd på samme mønster som AdminSchoolsPage, og gikk gjennom den. Claude sjekket med en midlertidig test at JobRepository.UpdateAsync bytter ut skolekravene riktig før controlleren ble laget.
+Verifisering: dotnet build ga 0 advarsler og dotnet test 21 av 21. npm run lint og npm run build ga 0 feil. Claude kalte alle endepunktene mot en midlertidig database: 401 og 403 uten admin, 201 med duplikat fjernet, 400 for ukjent skole og tomt navn, PUT som byttet og fjernet krav, 404 for jobb som ikke finnes, og sletting der spilleren ble arbeidsledig. Claude testet også admin-siden i nettleseren: opprette med skoler, redigere med riktige bokser krysset av, tomt navn og sletting.
 ```
 ### Sebastian
 ```
