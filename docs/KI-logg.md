@@ -111,6 +111,18 @@ Verktøy brukt: Claude
 Hva ble spurt: Veiledning steg for steg til CRUD for School (#24): DTO-er (record mot class), SchoolsController med statuskoder og roller, type og service i React, og admin-siden med liste, sletting og skjema for opprett og rediger.
 Hva ble brukt: SchoolDto, SaveSchoolDto, GetById og typen og servicen i React skrev jeg selv etter forklaring. Claude viste GetAll, Create, Update og Delete i controlleren, rettet feil (manglende komma, feil rute og dobbel import) og skrev ferdig admin-siden (skjemaet og redigeringen) da jeg ba om det. Jeg gikk gjennom koden og la den inn.
 Verifisering: dotnet build og npm run build ga 0 advarsler, og dotnet test var grønn. Claude testet endepunktene mot API-et (401, 403, 400, 201, 200, 204 og 404) og hele admin-siden i nettleseren: tomt navn, opprett, rediger, avbryt, slett og mobilbredde.
+
+Dato: 26-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Veiledning steg for steg til eksamen (#28): DTO-er, ExamService med trekk og retting, endepunkter i GameController med ServiceResult og ProblemDetails, tester med Moq, og eksamenssiden i React med typer, service og en midlertidig skoleliste.
+Hva ble brukt: Claude forklarte og viste koden for endepunktene, ToActionResult, testklassen, typene, gameService, ExamPage og SchoolsPage. Jeg la koden inn selv og rettet feil underveis (manglende hjelpemetode og dobbel import).
+Verifisering: dotnet build og npm run build ga 0 advarsler, npm run lint var ren, og dotnet test ga 19 av 19. Claude testet eksamen i nettleseren: låst knapp til alt er besvart, 3 riktige gir ikke bestått og lagrer ikke, 4 riktige gir bestått og vises på startsiden, Ny eksamen, ukjent skole og ugyldig skole-id.
+
+Dato: 27-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Veiledning steg for steg til skoleoversikten (#27): DTO, GetSchoolsAsync i ExamService, endepunktet GET api/game/schools, tester, og SchoolsPage med merke og knappetekst (betinget rendering, R-04).
+Hva ble brukt: Claude forklarte og viste koden for DTO-en, servicen, endepunktet, to tester, typen, getGameSchools, CSS for merket og SchoolsPage. Jeg la koden inn selv.
+Verifisering: dotnet build og npm run build ga 0 advarsler, npm run lint var ren, og dotnet test ga 21 av 21. Claude testet siden i nettleseren: riktig merke og knappetekst for bestått og ikke bestått skole, lenken til eksamen og mobilbredde.
 ```
 ### Ingvald
 ```
