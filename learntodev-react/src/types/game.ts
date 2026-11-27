@@ -53,3 +53,14 @@ export interface PlayerSchoolDto {
     description: string;
     passed: boolean;
 }
+
+// Samme felt som JobEligibility i API-et: én jobb slik spilleren ser den
+export interface PlayerJobDto {
+    jobId: number;
+    jobName: string;
+    description: string;
+    requiredSchools: string[];
+    isOpen: boolean;
+    lockReason: string | null;
+    isCurrent: boolean;
+}

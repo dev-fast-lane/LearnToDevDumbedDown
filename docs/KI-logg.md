@@ -129,6 +129,12 @@ Verktøy brukt: Claude
 Hva ble spurt: Hjelp til å gjøre ferdig CRUD for spørsmål med svaralternativer (#22), med guiden i docs/guide-issue-22.md. Først veiledning steg for steg, deretter å skrive resten fordi saken blokkerte andre.
 Hva ble brukt: Jeg skrev DTO-ene og valideringen (IValidatableObject) selv etter guiden. Claude skrev QuestionMapper, QuestionsController, StudyQuestionValidator, testene for validatoren og controlleren, og React-delen (typer, questionService, QuestionForm og AdminQuestionsPage), og løste konflikten med main da #24 kom inn (skolevalget ble en nedtrekksliste).
 Verifisering: dotnet build ga 0 advarsler, og dotnet test var grønn (34 tester). npm run build og npm run lint ga 0 feil. Testet alle endepunktene mot API-et lokalt (401, 403, 400 ved to riktige svar og ukjent skole, 201, 204, 404), og opprettet, redigerte og slettet et spørsmål i admin-siden i nettleseren.
+
+Dato: 27-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Veiledning steg for steg til jobbsiden (#31): ta jobb og si opp i JobService, endepunktene i GameController, tester med Moq og jobbsiden i React.
+Hva ble brukt: Claude foreslo koden for JobEligibility, TakeJobAsync, QuitJobAsync, endepunktene, de fem nye testene og JobsPage, og forklarte hver del. Jeg la den inn steg for steg, og Claude sjekket filene underveis.
+Verifisering: dotnet build ga 0 advarsler, og dotnet test ga 39 av 39 bestått. Claude testet endepunktene mot API-et (401, 200, 409 for låst jobb og for si opp uten jobb, 204 og 404) og jobbsiden i nettleseren: ta jobb, si opp og mobilbredde.
 ```
 ### Ingvald
 ```

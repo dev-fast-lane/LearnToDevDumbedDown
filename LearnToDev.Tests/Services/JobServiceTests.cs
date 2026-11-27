@@ -38,6 +38,14 @@ public class JobServiceTests
             _player.PassedExams.Add(new PassedExam { PlayerId = _player.Id, SchoolId = school.Id, School = school });
     }
 
+    private void GivenJobById(params School[] requiredSchools)
+    {
+        var job = new Job { Id = 1, Name = "Jobb" };
+        foreach (var school in requiredSchools)
+            job.JobRequirements.Add(new JobRequirement { JobId = 1, SchoolId = school.Id, School = school });
+        _jobRepository.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(job);
+    }
+
     [Fact]
     public async Task CheckAllJobsAsync_JobWithoutRequirements_IsOpen()
     {
@@ -81,5 +89,57 @@ public class JobServiceTests
 
         Assert.False(job.IsOpen);
         Assert.Equal("Mangler eksamen i Backend og Frontend", job.LockReason);
+    }
+
+    [Fact]
+    public async Task TakeJobAsync_OpenJob_SetsCurrentJob()
+    {
+        GivenPassed(Frontend);
+        GivenJobById(Frontend);
+
+        var result = await _service.TakeJobAsync(UserId, 1);
+
+        Assert.Equal(ServiceStatus.Success, result.Status);
+        Assert.True(result.Value!.IsCurrent);
+        _playerRepository.Verify(r => r.SetCurrentJobAsync(_player.Id, 1), Times.Once);
+    }
+
+    [Fact]
+    public async Task TakeJobAsync_LockedJob_ReturnsConflictAndSavesNothing()
+    {
+        GivenJobById(Frontend);
+
+        var result = await _service.TakeJobAsync(UserId, 1);
+
+        Assert.Equal(ServiceStatus.Conflict, result.Status);
+        Assert.Equal("Mangler eksamen i Frontend", result.Message);
+        _playerRepository.Verify(r => r.SetCurrentJobAsync(It.IsAny<int>(), It.IsAny<int?>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task TakeJobAsync_UnknownJob_ReturnsNotFound()
+    {
+        var result = await _service.TakeJobAsync(UserId, 99);
+
+        Assert.Equal(ServiceStatus.NotFound, result.Status);
+    }
+
+    [Fact]
+    public async Task QuitJobAsync_HasJob_RemovesJob()
+    {
+        _player.CurrentJobId = 1;
+
+        var result = await _service.QuitJobAsync(UserId);
+
+        Assert.Equal(ServiceStatus.Success, result.Status);
+        _playerRepository.Verify(r => r.SetCurrentJobAsync(_player.Id, null), Times.Once);
+    }
+
+    [Fact]
+    public async Task QuitJobAsync_NoJob_ReturnsConflict()
+    {
+        var result = await _service.QuitJobAsync(UserId);
+
+        Assert.Equal(ServiceStatus.Conflict, result.Status);
     }
 }
