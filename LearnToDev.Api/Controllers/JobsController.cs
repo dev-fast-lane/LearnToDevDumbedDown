@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LearnToDev.Api.Controllers;
 
-//CRUD for jobber med skolekrav (R-01, R-02). Bare admin har tilgang
+//CRUD for jobber med skolekrav. Alle innloggede kan lese, bare admin kan endre
 [ApiController]
 [Route("api/jobs")]
-[Authorize(Roles = Roles.Admin)]
+[Authorize]
 public class JobsController : ControllerBase
 {
     private readonly IJobRepository _jobRepository;
@@ -47,6 +47,7 @@ public class JobsController : ControllerBase
     
     //POST api/jobs
     [HttpPost]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<ActionResult<JobDto>> Create(SaveJobDto dto)
     {
         if (!await AllSchoolsExistAsync(dto.RequiredSchoolIds))
@@ -72,6 +73,7 @@ public class JobsController : ControllerBase
 
     //PUT api/jobs/3. Erstatter navn, beskrivelse og alle skolekravene
     [HttpPut("{id:int}")]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<ActionResult<JobDto>> Update(int id, SaveJobDto dto)
     {
         if (!await AllSchoolsExistAsync(dto.RequiredSchoolIds))
@@ -102,6 +104,7 @@ public class JobsController : ControllerBase
 
     //DELETE api/jobs/3. Spillere med denne jobben blir arbeidsledige
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> Delete(int id)
     {
         if (!await _jobRepository.DeleteAsync(id))

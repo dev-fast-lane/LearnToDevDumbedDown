@@ -1,7 +1,7 @@
 import { del, get, post, put } from "./apiClient";
 import type { JobDto, SaveJobDto } from "../types/job";
 
-// Alle kall til /api/jobs (JobsController). Bare admin har tilgang
+// Alle kall til /api/jobs (JobsController). Alle innloggede kan hente, bare admin kan endre
 
 export function getJobs(): Promise<JobDto[]> {
   return get<JobDto[]>("/jobs");
