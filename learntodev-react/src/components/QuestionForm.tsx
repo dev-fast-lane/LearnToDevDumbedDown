@@ -1,10 +1,12 @@
-import { useState, type SubmitEvent } from "react";
+import { useEffect, useState, type SubmitEvent } from "react";
 import FormField from "./FormField";
 import { useToast } from "./toast/useToast";
 import { ApiError } from "../services/apiError";
 import { createQuestion, updateQuestion } from "../services/questionService";
+import { getSchools } from "../services/schoolService";
 import { fieldErrorsFrom, type FieldErrors } from "../utils/problemDetails";
 import type { QuestionDto, SaveAnswerOptionDto } from "../types/question";
+import type { SchoolDto } from "../types/school";
 
 // Same limits as SaveQuestionDto in the API
 const MIN_OPTIONS = 2;
@@ -35,7 +37,27 @@ export default function QuestionForm({ question, onSaved, onCancel }: Props) {
   );
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
+  const [schools, setSchools] = useState<SchoolDto[]>([]);
   const toast = useToast();
+
+  // The schools for the dropdown (GET api/schools from #24)
+  useEffect(() => {
+    let cancelled = false; // ignore the answer if the form is closed before it arrives
+
+    async function fetchSchools() {
+      try {
+        const data = await getSchools();
+        if (!cancelled) setSchools(data);
+      } catch {
+        if (!cancelled) toast("Kunne ikke hente skolene.", "error");
+      }
+    }
+
+    fetchSchools();
+    return () => {
+      cancelled = true;
+    };
+  }, [toast]);
 
   // Never change the array in place: React compares the reference, so a mutated array gives no re-render
   function setOptionText(index: number, value: string) {
@@ -103,16 +125,29 @@ export default function QuestionForm({ question, onSaved, onCancel }: Props) {
     <form className="card" onSubmit={handleSubmit} noValidate>
       <h2>{isEdit ? "Rediger spørsmål" : "Nytt spørsmål"}</h2>
 
-      {/* No GET /api/schools yet (comes with #24), so the school is chosen by id for now */}
-      <FormField
-        label="Skole-id"
-        name="schoolId"
-        type="number"
-        min={1}
-        value={schoolId}
-        onChange={(e) => setSchoolId(e.target.value)}
-        error={errors.schoolId}
-      />
+      <div className="field">
+        <label htmlFor="schoolId">Skole</label>
+        <select
+          id="schoolId"
+          name="schoolId"
+          value={schoolId}
+          onChange={(e) => setSchoolId(e.target.value)}
+          aria-invalid={!!errors.schoolId}
+          aria-describedby={errors.schoolId ? "schoolId-error" : undefined}
+        >
+          <option value="">Velg skole</option>
+          {schools.map((school) => (
+            <option key={school.id} value={school.id}>
+              {school.name}
+            </option>
+          ))}
+        </select>
+        {errors.schoolId && (
+          <span id="schoolId-error" className="field-error">
+            {errors.schoolId}
+          </span>
+        )}
+      </div>
       <FormField
         label="Spørsmål"
         name="text"

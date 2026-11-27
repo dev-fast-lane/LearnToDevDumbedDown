@@ -37,6 +37,12 @@ Verktøy brukt: Claude
 Hva ble spurt: Veiledning steg for steg til API-tjenestelaget i React (#64): felles klient (apiClient), feilhåndtering av ProblemDetails (ApiError) og authService, med en grundig gjennomgang av koden.
 Hva ble brukt: Filene skrev jeg selv etter kodeforslag og forklaring fra Claude. Claude kjørte API-et for å se hvordan feilene faktisk ser ut før feilhåndteringen ble laget, foreslo kommentarene og skrev PR-teksten.
 Verifisering: tsc og eslint ga 0 feil. Claude kalte authService gjennom Vite-proxyen mot API-et med en midlertidig database: feil passord, valideringsfeil, svakt passord, registrering, me, logout og innlogging. Alle ga riktig svar eller ApiError, og cookien var ikke synlig for JavaScript. Søk viste ingen fetch utenfor src/services.
+
+Dato: 23-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Veiledning steg for steg til startskjermen (#15): PlayerStatusDto, GameController med GET api/game/status, typen og gameService i React, og StartPage med betinget visning. Fikk også hjelp til å kjøre npm i riktig mappe.
+Hva ble brukt: DTO-en, controlleren, typen og gameService skrev jeg selv etter kodeforslag og forklaring fra Claude. StartPage fikk jeg som hel fil fra Claude etter at jeg ba om det, og gikk gjennom den. Claude skrev kommentarene i StartPage og GameController og ryddet bort package-lock-endringer som npm hadde laget.
+Verifisering: dotnet build ga 0 advarsler og dotnet test 9 av 9. npm run lint og npm run build ga 0 feil. Testet startsiden i nettleseren som player. Claude kalte endepunktet mot en midlertidig database (401 uten innlogging, og én spiller selv etter flere kall), og testet startsiden gjennom Vite-proxyen både uten og med jobb og beståtte eksamener.
 ```
 ### Sebastian
 ```
@@ -100,11 +106,29 @@ Hva ble spurt: Forenkle prosjektet til en enklere quiz-app som fortsatt kan dekk
 Hva ble brukt: Jeg valgte omfanget (bare skoler, spørsmål, eksamen og jobber, uten økonomi og bolig). Claude skrev om det som allerede var ferdig til den nye modellen: modellklassene, DbContext, en ny første migrering, seed-filene, repositoriene, JobService (regelen for låste jobber) og testene for dem, og fjernet koden for det som ble kuttet. Claude oppdaterte også docs og laget sakene på det nye brettet med omskrevet tekst.
 Verifisering: dotnet build -warnaserror ga 0 advarsler, og dotnet test var grønn. npm run lint og npm run build ga 0 feil. Startet API-et på en tom database og sjekket at migreringen og seedingen gikk gjennom.
 
+Dato: 23-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Veiledning steg for steg til CRUD for School (#24): DTO-er (record mot class), SchoolsController med statuskoder og roller, type og service i React, og admin-siden med liste, sletting og skjema for opprett og rediger.
+Hva ble brukt: SchoolDto, SaveSchoolDto, GetById og typen og servicen i React skrev jeg selv etter forklaring. Claude viste GetAll, Create, Update og Delete i controlleren, rettet feil (manglende komma, feil rute og dobbel import) og skrev ferdig admin-siden (skjemaet og redigeringen) da jeg ba om det. Jeg gikk gjennom koden og la den inn.
+Verifisering: dotnet build og npm run build ga 0 advarsler, og dotnet test var grønn. Claude testet endepunktene mot API-et (401, 403, 400, 201, 200, 204 og 404) og hele admin-siden i nettleseren: tomt navn, opprett, rediger, avbryt, slett og mobilbredde.
+
+Dato: 26-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Veiledning steg for steg til eksamen (#28): DTO-er, ExamService med trekk og retting, endepunkter i GameController med ServiceResult og ProblemDetails, tester med Moq, og eksamenssiden i React med typer, service og en midlertidig skoleliste.
+Hva ble brukt: Claude forklarte og viste koden for endepunktene, ToActionResult, testklassen, typene, gameService, ExamPage og SchoolsPage. Jeg la koden inn selv og rettet feil underveis (manglende hjelpemetode og dobbel import).
+Verifisering: dotnet build og npm run build ga 0 advarsler, npm run lint var ren, og dotnet test ga 19 av 19. Claude testet eksamen i nettleseren: låst knapp til alt er besvart, 3 riktige gir ikke bestått og lagrer ikke, 4 riktige gir bestått og vises på startsiden, Ny eksamen, ukjent skole og ugyldig skole-id.
+
+Dato: 27-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Veiledning steg for steg til skoleoversikten (#27): DTO, GetSchoolsAsync i ExamService, endepunktet GET api/game/schools, tester, og SchoolsPage med merke og knappetekst (betinget rendering, R-04).
+Hva ble brukt: Claude forklarte og viste koden for DTO-en, servicen, endepunktet, to tester, typen, getGameSchools, CSS for merket og SchoolsPage. Jeg la koden inn selv.
+Verifisering: dotnet build og npm run build ga 0 advarsler, npm run lint var ren, og dotnet test ga 21 av 21. Claude testet siden i nettleseren: riktig merke og knappetekst for bestått og ikke bestått skole, lenken til eksamen og mobilbredde.
+
 Dato: 27-11-2026
 Verktøy brukt: Claude
 Hva ble spurt: Hjelp til å gjøre ferdig CRUD for spørsmål med svaralternativer (#22), med guiden i docs/guide-issue-22.md. Først veiledning steg for steg, deretter å skrive resten fordi saken blokkerte andre.
-Hva ble brukt: Jeg skrev DTO-ene og valideringen (IValidatableObject) selv etter guiden. Claude skrev QuestionMapper, QuestionsController, StudyQuestionValidator, testene for validatoren og controlleren, og React-delen (typer, questionService, QuestionForm og listen i AdminPage).
-Verifisering: dotnet build ga 0 advarsler, og dotnet test var grønn (22 tester). npm run build og npm run lint ga 0 feil. Testet alle endepunktene mot API-et lokalt (401, 403, 400 ved to riktige svar og ukjent skole, 201, 204, 404), og opprettet, redigerte og slettet et spørsmål i admin-siden i nettleseren.
+Hva ble brukt: Jeg skrev DTO-ene og valideringen (IValidatableObject) selv etter guiden. Claude skrev QuestionMapper, QuestionsController, StudyQuestionValidator, testene for validatoren og controlleren, og React-delen (typer, questionService, QuestionForm og AdminQuestionsPage), og løste konflikten med main da #24 kom inn (skolevalget ble en nedtrekksliste).
+Verifisering: dotnet build ga 0 advarsler, og dotnet test var grønn (34 tester). npm run build og npm run lint ga 0 feil. Testet alle endepunktene mot API-et lokalt (401, 403, 400 ved to riktige svar og ukjent skole, 201, 204, 404), og opprettet, redigerte og slettet et spørsmål i admin-siden i nettleseren.
 ```
 ### Ingvald
 ```
