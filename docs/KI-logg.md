@@ -49,6 +49,12 @@ Verktøy brukt: Claude
 Hva ble spurt: Veiledning steg for steg til CRUD for Job med skolekrav (#23): JobDto og SaveJobDto, JobsController med sjekk av ukjente skoler, typen og jobService i React, og admin-siden med avkrysning for skolene.
 Hva ble brukt: DTO-ene, JobsController, typen, jobService, ruten og lenken skrev jeg selv etter kodeforslag og forklaring fra Claude. AdminJobsPage fikk jeg som hel fil fra Claude, bygd på samme mønster som AdminSchoolsPage, og gikk gjennom den. Claude sjekket med en midlertidig test at JobRepository.UpdateAsync bytter ut skolekravene riktig før controlleren ble laget.
 Verifisering: dotnet build ga 0 advarsler og dotnet test 21 av 21. npm run lint og npm run build ga 0 feil. Claude kalte alle endepunktene mot en midlertidig database: 401 og 403 uten admin, 201 med duplikat fjernet, 400 for ukjent skole og tomt navn, PUT som byttet og fjernet krav, 404 for jobb som ikke finnes, og sletting der spilleren ble arbeidsledig. Claude testet også admin-siden i nettleseren: opprette med skoler, redigere med riktige bokser krysset av, tomt navn og sletting.
+
+Dato: 27-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Hjelp til rapportkapittel 5 (#55): CRUD-gjennomgang av StudyQuestion, N:M-relasjonen mellom Job og School, og arbeidsflytdiagram for spiller og admin.
+Hva ble brukt: Claude leste koden og foreslo teksten, endepunkttabellen og de to mermaid-diagrammene. Jeg la dem inn i rapportmalen og ryddet bort malteksten.
+Verifisering: Claude sjekket påstandene mot koden (QuestionsController, SaveQuestionDto, StudyQuestionValidator, QuestionForm, StudyQuestionRepository.UpdateAsync, JobsController og ExamDtos). At å ta og si opp jobb ikke er ferdig (#31), står tydelig i teksten. Kapittelet er på cirka 650 ord uten diagrammene.
 ```
 ### Sebastian
 ```
