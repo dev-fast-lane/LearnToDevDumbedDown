@@ -55,6 +55,12 @@ Verktøy brukt: Claude
 Hva ble spurt: Hjelp til rapportkapittel 5 (#55): CRUD-gjennomgang av StudyQuestion, N:M-relasjonen mellom Job og School, og arbeidsflytdiagram for spiller og admin.
 Hva ble brukt: Claude leste koden og foreslo teksten, endepunkttabellen og de to mermaid-diagrammene. Jeg la dem inn i rapportmalen og ryddet bort malteksten.
 Verifisering: Claude sjekket påstandene mot koden (QuestionsController, SaveQuestionDto, StudyQuestionValidator, QuestionForm, StudyQuestionRepository.UpdateAsync, JobsController og ExamDtos). At å ta og si opp jobb ikke er ferdig (#31), står tydelig i teksten. Kapittelet er på cirka 650 ord uten diagrammene.
+
+Dato: 27-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Veiledning til validering og logging i API-et (#39): hvilke DTO-er som manglet norske meldinger eller validering, og hvilke avviste handlinger som ikke ble logget.
+Hva ble brukt: Claude kartla API-et og ga kodeforslag. Jeg byttet til norske meldinger i SaveQuestionDto, SaveAnswerDto, StudyQuestionValidator og QuestionsController, la til validering i ExamAnswerDto, og la inn LogWarning for avviste handlinger i ExamService, JobService, QuestionsController og AuthController. Loggene bruker bare id-er, ikke brukernavn eller e-post. Claude hjalp meg å rette to feil underveis: en løkke i ExamService som ble kuttet av, og to suksesslinjer i QuestionsController som var byttet ut.
+Verifisering: dotnet build ga 0 advarsler og dotnet test 44 av 44. En test fanget at Delete svarte 404 også når spørsmålet fantes, før det ble rettet. Claude sendte 14 avviste forespørsler mot API-et med en midlertidig database og sjekket statuskode (400, 401, 404 eller 409), norsk melding og logglinje for hver.
 ```
 ### Sebastian
 ```

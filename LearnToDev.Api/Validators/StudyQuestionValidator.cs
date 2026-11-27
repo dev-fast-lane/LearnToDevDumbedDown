@@ -13,7 +13,7 @@ public static class StudyQuestionValidator
         if (dto.AnswerOptions.Count(o => o.IsCorrect) != 1)
         {
             yield return new ValidationResult(
-                "Needs exactly 1 correct option",
+                "Nøyaktig ett svar må være riktig.",
                 new[] { nameof(SaveQuestionDto.AnswerOptions) });
         }
     }

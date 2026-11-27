@@ -9,20 +9,20 @@ public record QuestionDto(int Id, int SchoolId, string SchoolName, string Text, 
 
 public class SaveQuestionDto : IValidatableObject
 {
-    [Range(1, int.MaxValue, ErrorMessage = "Choose a school!")]
+    [Range(1, int.MaxValue, ErrorMessage = "Velg en skole.")]
     public int SchoolId { get; set; }
 
-    [Required(ErrorMessage = "Write the question!")]
-    [StringLength(1000, ErrorMessage = "The max question length is 1000 characters.")]
+    [Required(ErrorMessage = "Skriv inn spørsmålet.")]
+    [StringLength(1000, ErrorMessage = "Spørsmålet kan være maks 1000 tegn.")]
     public string Text { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Writhe the explanation")]
-    [StringLength(2000, ErrorMessage = "Explanation shouldn't be over 2000 characters long.")]
+    [Required(ErrorMessage = "Skriv inn en forklaring.")]
+    [StringLength(2000, ErrorMessage = "Forklaringen kan være maks 2000 tegn.")]
     public string Explanation { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "OFc it needs Answer options!!!")]
-    [MinLength(2, ErrorMessage = "Must have at least 2 options")]
-    [MaxLength(4, ErrorMessage = "At most 4 options")]
+    [Required(ErrorMessage = "Legg til svaralternativer.")]
+    [MinLength(2, ErrorMessage = "Spørsmålet må ha minst 2 svaralternativer.")]
+    [MaxLength(4, ErrorMessage = "Spørsmålet kan ha maks 4 svaralternativer.")]
     public List<SaveAnswerDto> AnswerOptions { get; set; } = new();
 
     // Runs after the attributes pass. The rule itself is in StudyQuestionValidator
@@ -35,8 +35,8 @@ public class SaveQuestionDto : IValidatableObject
 
 public class SaveAnswerDto
 {
-    [Required(ErrorMessage = "Write the correct answer.")]
-    [StringLength(1000, ErrorMessage = "The answer should not exceed 1000 characters.")]
+    [Required(ErrorMessage = "Skriv inn svaralternativet.")]
+    [StringLength(1000, ErrorMessage = "Svaralternativet kan være maks 1000 tegn.")]
     public string Text { get; set; } = string.Empty;
 
     public bool IsCorrect { get; set; }

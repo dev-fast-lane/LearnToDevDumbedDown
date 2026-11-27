@@ -48,17 +48,24 @@ public class ExamService : IExamService
 
         return ServiceResult<ExamDto>.Ok(new ExamDto(school.Id, school.Name, drawn));
     }
+    
     public async Task<ServiceResult<ExamResultDto>> SubmitExamAsync(string userId, int schoolId, SubmitExamDto dto)
     {
         var school = await _schoolRepository.GetByIdAsync(schoolId);
         if (school == null)
+        {
+            _logger.LogWarning("User {UserId} submitted an exam for school {SchoolId}, which does not exist", userId, schoolId);
             return ServiceResult<ExamResultDto>.NotFound("Fant ikke skolen.");
+        }
 
         //Exactly one answer for each of 5 different questions
         var answeredIds = dto.Answers.Select(a => a.QuestionId).Distinct().Count();
         if (dto.Answers.Count != GameRules.ExamQuestionCount || answeredIds != GameRules.ExamQuestionCount)
+        {
+            _logger.LogWarning("User {UserId} submitted {Count} answers to the exam in school {SchoolId}", userId, dto.Answers.Count, schoolId);
             return ServiceResult<ExamResultDto>.Invalid(
                 $"Du må svare på nøyaktig {GameRules.ExamQuestionCount} ulike spørsmål.");
+        }
 
         //All the school's questions, looked up by id
         var questions = (await _questionRepository.GetBySchoolAsync(schoolId)).ToDictionary(q => q.Id);
@@ -68,16 +75,22 @@ public class ExamService : IExamService
         {
             //The question must belong to this school, and the chosen option to the question
             if (!questions.TryGetValue(answer.QuestionId, out var question))
+            {
+                _logger.LogWarning("User {UserId} answered question {QuestionId}, which is not in school {SchoolId}", userId, answer.QuestionId, schoolId);
                 return ServiceResult<ExamResultDto>.Invalid("Et av spørsmålene hører ikke til denne skolen.");
+            }
 
             if (question.AnswerOptions.All(o => o.Id != answer.AnswerOptionId))
+            {
+                _logger.LogWarning("User {UserId} chose option {OptionId}, which is not in question {QuestionId}", userId, answer.AnswerOptionId, question.Id);
                 return ServiceResult<ExamResultDto>.Invalid("Et av svarene hører ikke til spørsmålet.");
+            }
 
             var correctOption = question.AnswerOptions.Single(o => o.IsCorrect);
             feedback.Add(new ExamFeedbackDto(question.Id, question.Text,
                 correctOption.Id == answer.AnswerOptionId, correctOption.Text, question.Explanation));
         }
-
+        
         var correct = feedback.Count(f => f.Correct);
         var passed = correct >= GameRules.ExamPassMark;
 
