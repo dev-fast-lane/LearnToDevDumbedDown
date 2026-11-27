@@ -122,30 +122,81 @@ Beskriv hvordan `DbContext` er konfigurert, hvordan data hentes og lagres, og hv
 
 ## 5. Funksjonsoversikt og sporbarhet
 
-**Ansvarlig:** navn · **Omfang:** ca. 450–750 ord  
+**Ansvarlig:** Bjørnar Reime · **Omfang:** ca. 450–750 ord  
 **Tilhørende issues:** [#15](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/15), [#25](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/25), [#27](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/27), [#28](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/28), [#30](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/30), [#31](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/31)
 
-Beskriv de viktigste funksjonene og hvordan de støtter kravene. Velg én sentral domenemodell for den grundige CRUD-gjennomgangen.
+LearnToDev har tre domenemodeller med full CRUD for admin: `School`,
+`StudyQuestion` og `Job`. Spilleren bruker de samme dataene uten å endre dem.
+Hen tar eksamen på en skole og ser hvilke jobber eksamenene har låst opp.
+Hvilket krav hver funksjon oppfyller, og hvor det er gjort i koden, står i sporbarhetsmatrisen i [2.2](#22-kravsporbarhetsmatrise).
+Den gjentas ikke her. I stedet går vi grundig gjennom én modell, viser N:M-relasjonen i praksis og tegner arbeidsflyten for hver rolle.
 
 ### 5.1 Grundig gjennomgang av CRUD-operasjoner
 
-**Valgt domenemodell:** [for eksempel `StudyQuestion`, `Job` eller `School`]
+**Valgt domenemodell:** `StudyQuestion` med svaralternativer (`AnswerOption`), laget i [#22](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/22). Til slutt viser vi N:M-relasjonen mellom `Job` og `School` fra [#23](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/23).
 
 #### 5.1.1 Underapplikasjon 1: MVC
 
-Beskriv oppretting, lesing, oppdatering og sletting. Følg dataflyten gjennom skjema, controller, validering, datatilgang og resultatet som vises til brukeren.
-
-**Mulige tilhørende issues:** [#22](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/22), [#23](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/23), [#24](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/24)
+Prosjektet har ingen egen MVC-applikasjon. Den opprinnelige MVC-delen ble gjort om til et rent Web API i [#37](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/37), og alle skjermene ligger i React-appen. Derfor beskrives bare API og SPA nedenfor.
 
 #### 5.1.2 Underapplikasjon 2: API og SPA
 
-Hvis denne underapplikasjonen finnes i prosjektet, beskriv hvordan frontend sender forespørsler til API-et, hvordan API-et validerer og behandler dem, og hvordan svaret oppdaterer brukergrensesnittet. Hvis prosjektet ikke har en API/SPA-underapplikasjon, si det tydelig og dokumenter den faktiske løsningen i stedet.
+Alle spørsmålsendepunktene ligger i `QuestionsController`. `[Authorize(Roles = Roles.Admin)]` står på klassen, fordi `QuestionDto` inneholder fasiten (`IsCorrect`). Spillere får spørsmålene gjennom `GET api/game/exams/{schoolId}` i stedet. Der lager `ExamService` en `ExamQuestionDto` uten fasit.
+
+| Handling | Endepunkt | Svar |
+| --- | --- | --- |
+| Les og søk | `GET api/questions?search=&schoolId=` | 200 |
+| Les én | `GET api/questions/{id}` | 200 eller 404 |
+| Opprett | `POST api/questions` | 201 med `Location`, eller 400 |
+| Oppdater | `PUT api/questions/{id}` | 204, 400 eller 404 |
+| Slett | `DELETE api/questions/{id}` | 204 eller 404 |
+
+**Opprett, steg for steg.** Admin fyller ut `QuestionForm` på `/admin/questions`. Før noe sendes, sjekker `handleSubmit` de samme reglene som serveren: skole valgt, tekst og forklaring fylt ut, og nøyaktig ett riktig svar. Skjemaet sender så en `SaveQuestionDto` med `createQuestion` i `questionService.ts`, som går gjennom `apiClient`, og innloggingscookien følger med. På serveren validerer `[ApiController]` attributtene på DTO-en (lengder, 2–4 svaralternativer). Deretter kjører den `Validate`, som kaller `StudyQuestionValidator` for regelen om ett riktig svar. Controlleren sjekker også at skolen finnes. En ukjent `SchoolId` legges i `ModelState`, så klienten får 400 i samme format som de andre valideringsfeilene i stedet for 500 fra fremmednøkkelen. Er alt gyldig, gjør `QuestionMapper` DTO-en om til en modell, repositoryet lagrer den, og spørsmålet hentes på nytt så skolenavnet er med i svaret (201). Feiler valideringen, gjør `fieldErrorsFrom` om feltnavnene, og hver feil vises ved feltet sitt. Ved suksess hentes listen på nytt.
+
+**Les, oppdater og slett** følger samme mønster. Listen kan søkes på tekst og filtreres på skole ([#25](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/25)). `StudyQuestionRepository.UpdateAsync` erstatter alle svaralternativene, så admin kan legge til, fjerne og endre dem i én lagring. Før sletting må admin bekrefte i en dialog.
+
+**N:M i praksis: skolekrav på jobber.** `Job` og `School` er koblet gjennom koblingstabellen `JobRequirement`, med sammensatt nøkkel (`JobId`, `SchoolId`). I `AdminJobsPage` krysser admin av skolene jobben krever, og skjemaet sender bare en liste med `requiredSchoolIds`. `JobsController` sjekker at alle id-ene finnes, fjerner duplikater og lager én `JobRequirement` per skole. Ved oppdatering erstatter `JobRepository.UpdateAsync` hele kravlisten. `JobDto` sender skolene tilbake med navn, så tabellen kan vise for eksempel «Krever: Backend, Database». Den samme relasjonen brukes av `JobService` for å avgjøre om en jobb er åpen eller låst for spilleren.
 
 ### 5.2 Arbeidsflytdiagram: Hvordan ulike brukerroller bruker applikasjonen
 
-Ta med minst ett arbeidsflytdiagram for en sentral handling, for eksempel å ta eksamen eller ta en jobb. Vis relevante roller og beslutningspunkter.
+**Spiller.** Spilleren går mellom skolene og jobbene. Det viktigste beslutningspunktet er om eksamen er bestått, fordi det avgjør hvilke jobber som blir åpne. Å ta og si opp jobb kommer med [#31](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/31). Den delen av diagrammet viser flyten slik den er planlagt.
 
-**Mulige tilhørende issues:** [#27](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/27), [#28](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/28)
+```mermaid
+flowchart TD
+    A[Logg inn] --> B[Startside: nåværende jobb og beståtte eksamener]
+    B --> C[Skoler]
+    C --> D[Start eksamen: 5 tilfeldige spørsmål]
+    D --> E[Lever svarene]
+    E --> F{4 eller 5 riktige?}
+    F -- Ja --> G[Lagres som bestått]
+    F -- Nei --> H[Se resultat, fasit og forklaring]
+    G --> H
+    H --> C
+    B --> I[Jobber]
+    I --> J{Bestått alle skolene jobben krever?}
+    J -- Nei --> K[Låst, med årsak]
+    J -- Ja --> L[Ta jobben]
+    L --> M[Si opp]
+```
+
+**Admin.** Admin kan alt spilleren kan, og vedlikeholder i tillegg innholdet. De tre adminsidene virker likt: samme skjema brukes til ny og endring, og alt valideres både i klienten og på serveren.
+
+```mermaid
+flowchart TD
+    A[Logg inn som admin] --> B[Adminside]
+    B --> C[Skoler]
+    B --> D[Spørsmål]
+    B --> E[Jobber]
+    D --> F[Søk på tekst og filtrer på skole]
+    F --> G
+    C --> G[Opprett, rediger eller slett]
+    D --> G
+    E --> G
+    G --> H{Gyldig i klient og på server?}
+    H -- Nei --> I[Feilen vises ved feltet]
+    I --> G
+    H -- Ja --> J[Lagret, listen hentes på nytt]
+```
 
 ---
 
