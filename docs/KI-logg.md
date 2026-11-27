@@ -123,6 +123,12 @@ Verktøy brukt: Claude
 Hva ble spurt: Veiledning steg for steg til skoleoversikten (#27): DTO, GetSchoolsAsync i ExamService, endepunktet GET api/game/schools, tester, og SchoolsPage med merke og knappetekst (betinget rendering, R-04).
 Hva ble brukt: Claude forklarte og viste koden for DTO-en, servicen, endepunktet, to tester, typen, getGameSchools, CSS for merket og SchoolsPage. Jeg la koden inn selv.
 Verifisering: dotnet build og npm run build ga 0 advarsler, npm run lint var ren, og dotnet test ga 21 av 21. Claude testet siden i nettleseren: riktig merke og knappetekst for bestått og ikke bestått skole, lenken til eksamen og mobilbredde.
+
+Dato: 27-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Hjelp til å gjøre ferdig CRUD for spørsmål med svaralternativer (#22), med guiden i docs/guide-issue-22.md. Først veiledning steg for steg, deretter å skrive resten fordi saken blokkerte andre.
+Hva ble brukt: Jeg skrev DTO-ene og valideringen (IValidatableObject) selv etter guiden. Claude skrev QuestionMapper, QuestionsController, StudyQuestionValidator, testene for validatoren og controlleren, og React-delen (typer, questionService, QuestionForm og AdminQuestionsPage), og løste konflikten med main da #24 kom inn (skolevalget ble en nedtrekksliste).
+Verifisering: dotnet build ga 0 advarsler, og dotnet test var grønn (34 tester). npm run build og npm run lint ga 0 feil. Testet alle endepunktene mot API-et lokalt (401, 403, 400 ved to riktige svar og ukjent skole, 201, 204, 404), og opprettet, redigerte og slettet et spørsmål i admin-siden i nettleseren.
 ```
 ### Ingvald
 ```
