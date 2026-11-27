@@ -25,11 +25,12 @@ public class QuestionsController : ControllerBase
         _logger = logger;
     }
 
-    // GET api/questions -> 200 with all questions
+    // GET api/questions?search=html&schoolId=1 -> 200 with the questions that match.
+    // Both parameters are optional, so without them it returns all questions
     [HttpGet]
-    public async Task<ActionResult<List<QuestionDto>>> GetAll()
+    public async Task<ActionResult<List<QuestionDto>>> GetAll([FromQuery] string? search, [FromQuery] int? schoolId)
     {
-        var questions = await _questions.GetAllAsync();
+        var questions = await _questions.SearchAsync(search, schoolId);
         return Ok(questions.Select(q => q.ToDto()).ToList());
     }
 
