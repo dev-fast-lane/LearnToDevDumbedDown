@@ -99,6 +99,12 @@ Verktøy brukt: Claude
 Hva ble spurt: Forenkle prosjektet til en enklere quiz-app som fortsatt kan dekke kravene R-01–R-12, i et nytt repo (LearnToDevDumbedDown) med kopi av Kanban-brettet (#58). Funksjonene som ikke var laget ennå (CRUD, søk, eksamen, jobbside) skal gruppa lage selv.
 Hva ble brukt: Jeg valgte omfanget (bare skoler, spørsmål, eksamen og jobber, uten økonomi og bolig). Claude skrev om det som allerede var ferdig til den nye modellen: modellklassene, DbContext, en ny første migrering, seed-filene, repositoriene, JobService (regelen for låste jobber) og testene for dem, og fjernet koden for det som ble kuttet. Claude oppdaterte også docs og laget sakene på det nye brettet med omskrevet tekst.
 Verifisering: dotnet build -warnaserror ga 0 advarsler, og dotnet test var grønn. npm run lint og npm run build ga 0 feil. Startet API-et på en tom database og sjekket at migreringen og seedingen gikk gjennom.
+
+Dato: 27-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Hjelp til å gjøre ferdig CRUD for spørsmål med svaralternativer (#22), med guiden i docs/guide-issue-22.md. Først veiledning steg for steg, deretter å skrive resten fordi saken blokkerte andre.
+Hva ble brukt: Jeg skrev DTO-ene og valideringen (IValidatableObject) selv etter guiden. Claude skrev QuestionMapper, QuestionsController, StudyQuestionValidator, testene for validatoren og controlleren, og React-delen (typer, questionService, QuestionForm og listen i AdminPage).
+Verifisering: dotnet build ga 0 advarsler, og dotnet test var grønn (22 tester). npm run build og npm run lint ga 0 feil. Testet alle endepunktene mot API-et lokalt (401, 403, 400 ved to riktige svar og ukjent skole, 201, 204, 404), og opprettet, redigerte og slettet et spørsmål i admin-siden i nettleseren.
 ```
 ### Ingvald
 ```

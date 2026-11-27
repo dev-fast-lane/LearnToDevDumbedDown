@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using LearnToDev.Api.Validators;
 
 namespace LearnToDev.Api.DTOs;
 
@@ -24,14 +25,10 @@ public class SaveQuestionDto : IValidatableObject
     [MaxLength(4, ErrorMessage = "At most 4 options")]
     public List<SaveAnswerDto> AnswerOptions { get; set; } = new();
 
+    // Runs after the attributes pass. The rule itself is in StudyQuestionValidator
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        if (AnswerOptions.Count(o => o.IsCorrect) != 1)
-        {
-            yield return new ValidationResult(
-                "Needs exactly 1 correct option",
-                new[] { nameof(AnswerOptions) });
-        }
+        return StudyQuestionValidator.Validate(this);
     }
 
 }
