@@ -7,6 +7,9 @@ export default function AdminPage() {
       <Link className="btn" to="/admin/schools">
         Skoler
       </Link>
+        <Link className="btn" to="/admin/jobs">
+            Jobber
+        </Link>
     </>
   );
 }
