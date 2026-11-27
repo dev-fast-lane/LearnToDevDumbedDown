@@ -23,15 +23,60 @@ public class JobService : IJobService
         var player = await _playerRepository.GetOrCreateAsync(userId);
         var jobs = await _jobRepository.GetAllAsync();
 
-        var results = jobs.Select(job =>
-        {
-            var lockReason = GetLockReason(job, player);
-            return new JobEligibility(job.Id, job.Name, lockReason == null, lockReason);
-        }).ToList();
+        var results = jobs.Select(job => ToEligibility(job, player)).ToList();
 
         _logger.LogDebug("Player {PlayerId} has {OpenCount} of {JobCount} jobs open",
             player.Id, results.Count(r => r.IsOpen), results.Count);
         return results;
+    }
+
+    public async Task<ServiceResult<JobEligibility>> TakeJobAsync(string userId, int jobId)
+    {
+        var job = await _jobRepository.GetByIdAsync(jobId);
+        if (job == null)
+            return ServiceResult<JobEligibility>.NotFound("Fant ikke jobben.");
+
+        var player = await _playerRepository.GetOrCreateAsync(userId);
+
+        // The same rule as on the jobs page, checked again on the server, so a locked job cannot be taken
+        var lockReason = GetLockReason(job, player);
+        if (lockReason != null)
+        {
+            _logger.LogWarning("Player {PlayerId} tried to take locked job {JobId}", player.Id, jobId);
+            return ServiceResult<JobEligibility>.Conflict(lockReason);
+        }
+
+        await _playerRepository.SetCurrentJobAsync(player.Id, job.Id);
+        player.CurrentJobId = job.Id; // so IsCurrent is true in the answer
+        _logger.LogInformation("Player {PlayerId} took job {JobId}", player.Id, jobId);
+
+        return ServiceResult<JobEligibility>.Ok(ToEligibility(job, player));
+    }
+
+    public async Task<ServiceResult<bool>> QuitJobAsync(string userId)
+    {
+        var player = await _playerRepository.GetOrCreateAsync(userId);
+        if (player.CurrentJobId == null)
+            return ServiceResult<bool>.Conflict("Du har ingen jobb å si opp.");
+
+        _logger.LogInformation("Player {PlayerId} quit job {JobId}", player.Id, player.CurrentJobId);
+        await _playerRepository.SetCurrentJobAsync(player.Id, null);
+
+        return ServiceResult<bool>.Ok(true);
+    }
+
+    // Builds the answer for one job and one player
+    private static JobEligibility ToEligibility(Job job, Player player)
+    {
+        var lockReason = GetLockReason(job, player);
+        return new JobEligibility(
+            job.Id,
+            job.Name,
+            job.Description,
+            job.JobRequirements.Select(r => r.School.Name).OrderBy(name => name).ToList(),
+            lockReason == null,
+            lockReason,
+            player.CurrentJobId == job.Id);
     }
 
     // null when the job is open, otherwise e.g. "Mangler eksamen i Backend og Frontend"

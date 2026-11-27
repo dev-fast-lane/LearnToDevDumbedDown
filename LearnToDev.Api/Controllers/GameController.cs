@@ -17,12 +17,14 @@ public class GameController : ControllerBase
     private readonly IPlayerRepository _playerRepository;
     private readonly ILogger<GameController> _logger;
     private readonly IExamService _examService;
+    private readonly IJobService _jobService;
 
-    public GameController(IPlayerRepository playerRepository, ILogger<GameController> logger, IExamService examService)
+    public GameController(IPlayerRepository playerRepository, ILogger<GameController> logger, IExamService examService, IJobService jobService)
     {
         _playerRepository = playerRepository;
         _logger = logger;
         _examService = examService;
+        _jobService = jobService;
     }
 
     //Startskjermen: nåværende jobb og beståtte eksamener
@@ -84,6 +86,52 @@ public class GameController : ControllerBase
         }
 
         return Ok(await _examService.GetSchoolsAsync(userId));
+    }
+
+    //Jobbsiden: alle jobbene, med om de er åpne eller låste, og hvorfor
+    [HttpGet("jobs")]
+    public async Task<ActionResult<List<JobEligibility>>> GetJobs()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+        {
+            return Unauthorized();
+        }
+
+        return Ok(await _jobService.CheckAllJobsAsync(userId));
+    }
+
+    //Tar en jobb. En låst jobb gir 409 med årsaken
+    [HttpPost("jobs/{jobId:int}/take")]
+    public async Task<ActionResult<JobEligibility>> TakeJob(int jobId)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+        {
+            return Unauthorized();
+        }
+
+        return ToActionResult(await _jobService.TakeJobAsync(userId, jobId));
+    }
+
+    //Sier opp jobben. Uten jobb gir det 409
+    [HttpPost("jobs/quit")]
+    public async Task<IActionResult> QuitJob()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+        {
+            return Unauthorized();
+        }
+
+        var result = await _jobService.QuitJobAsync(userId);
+        if (result.Status != ServiceStatus.Success)
+        {
+            return ToActionResult(result).Result!;
+        }
+
+        //204: det gikk bra, men det er ingenting å sende tilbake
+        return NoContent();
     }
 
     //Gjør om utfallet fra servicen til riktig statuskode. Feilene sendes som ProblemDetails
