@@ -6,6 +6,9 @@ export default function AdminPage() {
       <h1>Admin</h1>
       <Link className="btn" to="/admin/schools">
         Skoler
+      </Link>{" "}
+      <Link className="btn" to="/admin/questions">
+        Spørsmål
       </Link>
         <Link className="btn" to="/admin/jobs">
             Jobber

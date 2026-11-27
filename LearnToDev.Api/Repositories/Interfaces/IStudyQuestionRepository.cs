@@ -10,4 +10,5 @@ public interface IStudyQuestionRepository
     Task<StudyQuestion> AddAsync(StudyQuestion question);
     Task<bool> UpdateAsync(StudyQuestion question);
     Task<bool> DeleteAsync(int id);
+    Task<List<StudyQuestion>> SearchAsync(string? search, int? schoolId);
 }

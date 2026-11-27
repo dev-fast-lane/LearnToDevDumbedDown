@@ -129,6 +129,12 @@ Verktøy brukt: Claude
 Hva ble spurt: Veiledning steg for steg til skoleoversikten (#27): DTO, GetSchoolsAsync i ExamService, endepunktet GET api/game/schools, tester, og SchoolsPage med merke og knappetekst (betinget rendering, R-04).
 Hva ble brukt: Claude forklarte og viste koden for DTO-en, servicen, endepunktet, to tester, typen, getGameSchools, CSS for merket og SchoolsPage. Jeg la koden inn selv.
 Verifisering: dotnet build og npm run build ga 0 advarsler, npm run lint var ren, og dotnet test ga 21 av 21. Claude testet siden i nettleseren: riktig merke og knappetekst for bestått og ikke bestått skole, lenken til eksamen og mobilbredde.
+
+Dato: 27-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Hjelp til å gjøre ferdig CRUD for spørsmål med svaralternativer (#22), med guiden i docs/guide-issue-22.md. Først veiledning steg for steg, deretter å skrive resten fordi saken blokkerte andre.
+Hva ble brukt: Jeg skrev DTO-ene og valideringen (IValidatableObject) selv etter guiden. Claude skrev QuestionMapper, QuestionsController, StudyQuestionValidator, testene for validatoren og controlleren, og React-delen (typer, questionService, QuestionForm og AdminQuestionsPage), og løste konflikten med main da #24 kom inn (skolevalget ble en nedtrekksliste).
+Verifisering: dotnet build ga 0 advarsler, og dotnet test var grønn (34 tester). npm run build og npm run lint ga 0 feil. Testet alle endepunktene mot API-et lokalt (401, 403, 400 ved to riktige svar og ukjent skole, 201, 204, 404), og opprettet, redigerte og slettet et spørsmål i admin-siden i nettleseren.
 ```
 ### Ingvald
 ```
@@ -143,6 +149,12 @@ Verktøy brukt: Claude
 Hva ble spurt: Hjelp til felles design i React (#119): valg av CSS-løsning, felles farger og avstander, komponenter for lasting, feil og tom liste, toast for tilbakemelding, skjemafelt med feilmelding ved feltet (også fra ProblemDetails), 404-side og en meny som fungerer på mobilbredde. Jeg spurte også om rettelser da lint og TypeScript ga feil.
 Hva ble brukt: Forslag til index.css med variabler, StateViews, FormField, ToastProvider/useToast, fieldErrorsFrom og eksempelsidene JobsPage og LoginPage. Jeg la filene inn selv og rettet feil underveis (feil import fra react-router-dom, manglende id i FormField, klassenavn som ikke stemte med CSS-en, feil rute og feltnavn mot API-et). Claude foreslo menyen med like brede knapper på mobil og rettelsen for lintregelen set-state-in-effect og for FormEvent (SubmitEvent).
 Verifisering: Kjørte npm run lint og npm run build. Sjekket siden på 375 px i DevTools. Sammenlignet feltnavnene i LoginPage med LoginDto og ruten med AuthController.
+
+Dato: 13 & 27-11-2026
+Verktøy brukt: Claude
+Hva ble spurt: Hjelp til å skrive kapittel 4 i rapporten (databasestruktur og datatilgang, #41): følge word-malen.
+Hva ble brukt: Claude skrev utkast som jeg oversatte til engelsk. 
+Verifisering: sjekket kode-referansene i prosjektet og tok direkte screenshot derfra.
 
 Dato:
 Verktøy brukt: Claude/ Chat-GPT/ Sikt-KI-chat/ osv.

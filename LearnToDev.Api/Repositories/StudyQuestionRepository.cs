@@ -24,6 +24,26 @@ public class StudyQuestionRepository : IStudyQuestionRepository
         return await WithDetails().FirstOrDefaultAsync(q => q.Id == id);
     }
 
+    // Adds a each function
+    public async Task<List<StudyQuestion>> SearchAsync(string? search, int? schoolId)
+    {
+        var query = WithDetails();
+
+        if (schoolId.HasValue)
+            query = query.Where(q => q.SchoolId == schoolId.Value);
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var term = search.Trim().ToLower();
+            query = query.Where(q => q.Text.ToLower().Contains(term));
+        }
+
+        return await query
+            .OrderBy(q => q.School.Name)
+            .ThenBy(q => q.Id)
+            .ToListAsync();
+    }
+
     //All questions in one school with their answer options, used by the exam
     public async Task<List<StudyQuestion>> GetBySchoolAsync(int schoolId)
     {

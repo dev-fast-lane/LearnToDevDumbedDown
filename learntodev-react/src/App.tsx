@@ -7,6 +7,7 @@ import JobsPage from "./pages/JobsPage";
 import AdminPage from "./pages/AdminPage";
 import AdminSchoolsPage from "./pages/AdminSchoolsPage";
 import AdminJobsPage from "./pages/AdminJobsPage";
+import AdminQuestionsPage from "./pages/AdminQuestionsPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage";
 import RequireAuth from "./auth/RequireAuth";
@@ -34,6 +35,7 @@ export default function App() {
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/admin/schools" element={<AdminSchoolsPage />} />
             <Route path="/admin/jobs" element={<AdminJobsPage />} />
+            <Route path="/admin/questions" element={<AdminQuestionsPage />} />
           </Route>
         </Route>
 
