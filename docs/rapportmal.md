@@ -159,7 +159,7 @@ Alle spørsmålsendepunktene ligger i `QuestionsController`. `[Authorize(Roles =
 
 ### 5.2 Arbeidsflytdiagram: Hvordan ulike brukerroller bruker applikasjonen
 
-**Spiller.** Spilleren går mellom skolene og jobbene. Det viktigste beslutningspunktet er om eksamen er bestått, fordi det avgjør hvilke jobber som blir åpne. Å ta og si opp jobb kommer med [#31](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/31). Den delen av diagrammet viser flyten slik den er planlagt.
+**Spiller.** Spilleren går mellom skolene og jobbene. Det viktigste beslutningspunktet er om eksamen er bestått, fordi det avgjør hvilke jobber som blir åpne. En låst jobb viser hva som mangler, og en åpen jobb tas med `POST api/game/jobs/{jobId}/take` og sies opp med `POST api/game/jobs/quit` ([#31](https://github.com/dev-fast-lane/LearnToDevDumbedDown/issues/31)).
 
 ```mermaid
 flowchart TD
