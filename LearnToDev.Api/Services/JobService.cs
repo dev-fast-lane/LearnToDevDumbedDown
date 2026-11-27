@@ -57,7 +57,10 @@ public class JobService : IJobService
     {
         var player = await _playerRepository.GetOrCreateAsync(userId);
         if (player.CurrentJobId == null)
+        {
+            _logger.LogWarning("Player {PlayerId} tried to quit, but has no job", player.Id);
             return ServiceResult<bool>.Conflict("Du har ingen jobb å si opp.");
+        }
 
         _logger.LogInformation("Player {PlayerId} quit job {JobId}", player.Id, player.CurrentJobId);
         await _playerRepository.SetCurrentJobAsync(player.Id, null);
