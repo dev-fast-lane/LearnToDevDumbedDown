@@ -108,6 +108,10 @@ h1, h2, h3 {
     background: var(--color-success-bg);
     color: var(--color-success);
 }
+.badge-danger {
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
+}
 /* Tables: scroll inside wrapper, not whole page on narrow screens/phone */
 .table-wrap {
     overflow-x: auto;
